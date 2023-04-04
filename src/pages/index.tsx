@@ -1,14 +1,27 @@
-import ChatList from "@/components/chat/ChatList";
+import ChatRoomList from "../views/chat/ChatRoomList";
 import theme from "@/utils/theme";
 import ChatWindow from "@/views/chat/ChatWindow";
 import { Layout, TabsProps, Typography } from "antd";
 import React from "react";
 import { useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
+import SearchIcon from "@mui/icons-material/Search";
 import styled from "styled-components";
 
-const { Header, Content } = Layout;
-const { Title } = Typography;
+const chatRooms = [
+  {
+    user: "Alice",
+    messages: ["Hello, Alice!", "Hi, Bob!", "What's up, Charlie?"],
+    time: "10:00 AM",
+    newMessagesCount: 1,
+  },
+  {
+    user: "Dave",
+    messages: ["Hey, Dave!", "Hi, Eve!"],
+    time: "21:00 PM",
+    newMessagesCount: 10,
+  },
+];
 
 const Home = () => {
   const [socket, setSocket] = useState<Socket>();
@@ -33,86 +46,52 @@ const Home = () => {
     socket?.emit("message", value);
   };
 
-  const items: TabsProps["items"] = [
-    {
-      key: "1",
-      label: `All`,
-      children: null,
-    },
-    {
-      key: "2",
-      label: `Directs`,
-      children: null,
-    },
-    {
-      key: "3",
-      label: `Groups`,
-      children: null,
-    },
-  ];
+  const renderSideber = () => {
+    return (
+      <SidebarContainer>
+        <SidebarHeader>
+          <SearchContainer>
+            <SearchIcon sx={{ fontSize: 18 }} />
+            <StyledInput placeholder="Search for chats" />
+          </SearchContainer>
+        </SidebarHeader>
+        <ChatRoomList chatRoomList={chatRooms} />
+      </SidebarContainer>
+    );
+  };
 
-  return (
-    <ChatContainer>
-      <NavBar>
-        <ChatCategory>
-          <Category>All</Category>
-          <Category>Directs</Category>
-          <Category>Groups</Category>
-        </ChatCategory>
-        <ProfileName level={5}>Tae</ProfileName>
-      </NavBar>
-      <MyContent>
-        <ChatList chatList={[1, 2, 3, 4, 5]} />
-        <ChatWindow
-          name="Tae"
-          messages={[
-            1, 2, 3, 4, 5, 2, 3, 4, 5, 2, 3, 4, 5, 2, 3, 4, 5, 2, 3, 4, 5, 2, 3,
-            4, 5, 2, 3, 4, 5, 2, 3, 4, 5, 2, 3, 4, 5, 2, 3, 4, 5, 2, 3, 4, 5, 2,
-            3, 4, 5, 2, 3, 4, 5, 2, 3, 4, 5, 2, 3, 4, 5,
-          ]}
-        />
-      </MyContent>
-    </ChatContainer>
-  );
+  return <div>{renderSideber()}</div>;
 };
 
-const ChatContainer = styled(Layout)`
+const SidebarContainer = styled.div`
+  width: 20%;
+  border: 1px solid white;
   height: 100vh;
-  width: 100vw;
-  .ant-tabs-nav {
-    margin: 0;
-  }
-  .ant-layout-header {
-    background-color: ${theme.color.white};
-    padding: 0 5vw 0 2.5vw;
-  }
 `;
 
-const NavBar = styled(Header)`
+const SidebarHeader = styled.div`
+  height: 3rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  border-bottom: 1px solid ${theme.color.border};
 `;
 
-const ChatCategory = styled.div`
+const SearchContainer = styled.div`
+  height: 80%;
+  width: 80%;
+  background-color: #f6f6f6;
   display: flex;
-  flex-flow: row;
-  gap: 1vw;
+  align-items: center;
+  padding: 0 1rem;
+  border-radius: 20px;
 `;
 
-const Category = styled.div`
-  width: 50px;
-  text-align: center;
-`;
-
-const ProfileName = styled(Title)``;
-
-const MyContent = styled(Content)`
+const StyledInput = styled.input`
   height: 100%;
-  overflow-y: scroll;
-  display: flex;
-  flex-flow: row;
+  width: 80%;
+  background-color: #f6f6f6;
+  border: 0;
+  outline: none;
 `;
 
 export default Home;
