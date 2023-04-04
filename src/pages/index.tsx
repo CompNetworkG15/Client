@@ -1,5 +1,5 @@
-import ChatList from "@/components/chat/ChatList";
 import theme from "@/utils/theme";
+import ChatList from "@/views/chat/ChatList";
 import ChatWindow from "@/views/chat/ChatWindow";
 import { Layout, TabsProps, Typography } from "antd";
 import React from "react";

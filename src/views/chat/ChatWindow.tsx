@@ -91,6 +91,9 @@ const Main = styled.div`
 
 const Footer = styled.div`
   width: 100%;
+  .ant-input {
+    border-radius: 0;
+  }
 `;
 
 export default ChatWindow;
