@@ -29,27 +29,9 @@ const Home = () => {
     };
   }, [socket]);
 
-  const send = (value: string) => {
-    socket?.emit("message", value);
+  const send = (message: string) => {
+    socket?.emit("message", message);
   };
-
-  const items: TabsProps["items"] = [
-    {
-      key: "1",
-      label: `All`,
-      children: null,
-    },
-    {
-      key: "2",
-      label: `Directs`,
-      children: null,
-    },
-    {
-      key: "3",
-      label: `Groups`,
-      children: null,
-    },
-  ];
 
   return (
     <ChatContainer>
@@ -63,14 +45,7 @@ const Home = () => {
       </NavBar>
       <MyContent>
         <ChatList chatList={[1, 2, 3, 4, 5]} />
-        <ChatWindow
-          name="Tae"
-          messages={[
-            1, 2, 3, 4, 5, 2, 3, 4, 5, 2, 3, 4, 5, 2, 3, 4, 5, 2, 3, 4, 5, 2, 3,
-            4, 5, 2, 3, 4, 5, 2, 3, 4, 5, 2, 3, 4, 5, 2, 3, 4, 5, 2, 3, 4, 5, 2,
-            3, 4, 5, 2, 3, 4, 5, 2, 3, 4, 5, 2, 3, 4, 5,
-          ]}
-        />
+        <ChatWindow name="Tae" messages={messages} send={send} />
       </MyContent>
     </ChatContainer>
   );

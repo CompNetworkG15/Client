@@ -7,12 +7,13 @@ import styled from "styled-components";
 type ChatWindowProps = {
   name: string;
   messages: Message[];
+  send: (message: string) => void;
 };
 
 const { Title } = Typography;
 const { TextArea } = Input;
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ name, messages }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({ name, messages, send }) => {
   const [message, setMessage] = React.useState<string>();
 
   const header = useMemo(
@@ -42,9 +43,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ name, messages }) => {
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         autoSize={{ minRows: 5, maxRows: 7 }}
+        onPressEnter={() => {
+          if (message) send(message);
+        }}
       />
     ),
-    [message]
+    [send, message]
   );
 
   return (

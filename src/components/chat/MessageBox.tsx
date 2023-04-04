@@ -10,9 +10,7 @@ type MessageBoxProps = {
 const MessageBox: React.FC<MessageBoxProps> = ({ message }) => {
   return (
     <Box>
-      <div>Image</div>
-      <div>Text</div>
-      <div>Time</div>
+      <div>{message}</div>
     </Box>
   );
 };
