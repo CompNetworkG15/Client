@@ -2,13 +2,13 @@ import { Chat } from "@/types";
 import theme from "@/utils/theme";
 import React from "react";
 import styled from "styled-components";
-import ChatRoom from "@/components/ChatRoomList/ChatRoom";
+import ChatRoom from "@/components/ChatRoom";
 
 type ChatListProps = {
   chatRoomList: Chat[];
 };
 
-const ChatList: React.FC<ChatListProps> = ({ chatRoomList }) => {
+const ChatRoomList: React.FC<ChatListProps> = ({ chatRoomList }) => {
   return (
     <ChatRoomListContainer>
       {chatRoomList.map((chatRoom, index) => (
@@ -27,8 +27,8 @@ const ChatList: React.FC<ChatListProps> = ({ chatRoomList }) => {
 const ChatRoomListContainer = styled.div`
   display: flex;
   flex-flow: column;
-  width: 20%;
+  width: 100%;
   border-right: 1px solid ${theme.color.border};
 `;
 
-export default ChatList;
+export default ChatRoomList;

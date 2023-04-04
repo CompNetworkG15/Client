@@ -19,6 +19,60 @@ const chatRooms = [
     user: "Dave",
     messages: ["Hey, Dave!", "Hi, Eve!"],
     time: "21:00 PM",
+    newMessagesCount: 0,
+  },
+  {
+    user: "Dave",
+    messages: ["Hey, Dave!", "test test"],
+    time: "21:00 PM",
+    newMessagesCount: 0,
+  },
+  {
+    user: "Dave",
+    messages: ["Hey, Dave!", "Hi, Eve!"],
+    time: "21:00 PM",
+    newMessagesCount: 3,
+  },
+  {
+    user: "Dave",
+    messages: ["Hey, Dave!", "Eve!sssjdnjasdnsajasdmkasdmsakssss"],
+    time: "21:00 PM",
+    newMessagesCount: 0,
+  },
+  {
+    user: "Dave",
+    messages: ["Hey, Dave!", "Eve!sssjdnjasdnsajasdmkasdmsakssss"],
+    time: "21:00 PM",
+    newMessagesCount: 10,
+  },
+  {
+    user: "Dave",
+    messages: ["Hey, Dave!", "Eve!sssjdnjasdnsajasdmkasdmsakssss"],
+    time: "21:00 PM",
+    newMessagesCount: 10,
+  },
+  {
+    user: "Dave",
+    messages: ["Hey, Dave!", "Eve!sssjdnjasdnsajasdmkasdmsakssss"],
+    time: "21:00 PM",
+    newMessagesCount: 10,
+  },
+  {
+    user: "Dave",
+    messages: ["Hey, Dave!", "Eve!sssjdnjasdnsajasdmkasdmsakssss"],
+    time: "21:00 PM",
+    newMessagesCount: 10,
+  },
+  {
+    user: "Dave",
+    messages: ["Hey, Dave!", "Eve!sssjdnjasdnsajasdmkasdmsakssss"],
+    time: "21:00 PM",
+    newMessagesCount: 10,
+  },
+  {
+    user: "Dave",
+    messages: ["Hey, Dave!", "Eve!sssjdnjasdnsajasdmkasdmsakssss"],
+    time: "21:00 PM",
     newMessagesCount: 10,
   },
 ];
@@ -51,7 +105,7 @@ const Home = () => {
       <SidebarContainer>
         <SidebarHeader>
           <SearchContainer>
-            <SearchIcon sx={{ fontSize: 18 }} />
+            <SearchIcon sx={{ fontSize: "1.2vw" }} />
             <StyledInput placeholder="Search for chats" />
           </SearchContainer>
         </SidebarHeader>
@@ -64,7 +118,7 @@ const Home = () => {
 };
 
 const SidebarContainer = styled.div`
-  width: 20%;
+  width: 25%;
   border: 1px solid white;
   height: 100vh;
 `;
@@ -83,7 +137,7 @@ const SearchContainer = styled.div`
   display: flex;
   align-items: center;
   padding: 0 1rem;
-  border-radius: 20px;
+  border-radius: 6px;
 `;
 
 const StyledInput = styled.input`
@@ -92,6 +146,7 @@ const StyledInput = styled.input`
   background-color: #f6f6f6;
   border: 0;
   outline: none;
+  font-size: 1vw;
 `;
 
 export default Home;
