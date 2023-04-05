@@ -96,8 +96,8 @@ const Home = () => {
     };
   }, [socket]);
 
-  const send = (value: string) => {
-    socket?.emit("message", value);
+  const send = (message: string) => {
+    socket?.emit("message", message);
   };
 
   const renderSideber = () => {
@@ -115,6 +115,22 @@ const Home = () => {
   };
 
   return <div>{renderSideber()}</div>;
+  return (
+    <ChatContainer>
+      <NavBar>
+        <ChatCategory>
+          <Category>All</Category>
+          <Category>Directs</Category>
+          <Category>Groups</Category>
+        </ChatCategory>
+        <ProfileName level={5}>Tae</ProfileName>
+      </NavBar>
+      <MyContent>
+        <ChatList chatList={[1, 2, 3, 4, 5]} />
+        <ChatWindow name="Tae" messages={messages} send={send} />
+      </MyContent>
+    </ChatContainer>
+  );
 };
 
 const SidebarContainer = styled.div`
