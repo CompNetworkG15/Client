@@ -118,7 +118,7 @@ const Home = () => {
 };
 
 const SidebarContainer = styled.div`
-  width: 25%;
+  width: 20%;
   border: 1px solid white;
   height: 100vh;
 `;

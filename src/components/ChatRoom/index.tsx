@@ -67,8 +67,8 @@ const ChatRoomContainer = styled.div`
 
 const NewMessagesCountContainer = styled.div`
   border-radius: 50%;
-  height: 1.5vw;
-  width: 1.5vw;
+  height: 1.1vw;
+  width: 1.1vw;
   background-color: #f96491;
   display: flex;
   justify-content: center;
@@ -115,24 +115,23 @@ const LeftContainer = styled.div`
 
 const ImageContainer = styled.div`
   position: relative;
-  height: 5vw;
-  width: 5vw;
+  height: 3vw;
+  width: 3vw;
 `;
 
 const TimeContainer = styled.div`
   color: #cccccc;
-  font-size: 1vw;
+  font-size: 0.7vw;
 `;
 
 const UserContainer = styled.div`
   font-weight: bold;
-  font-size: 1.3rem;
-  font-size: 1.4vw;
+  font-size: 1vw;
 `;
 
 const MessageContainer = styled.div`
   color: #777777;
-  font-size: 1vw;
+  font-size: 0.7vw;
 `;
 
 export default ChatRoom;
