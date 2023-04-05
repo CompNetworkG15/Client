@@ -8,6 +8,9 @@ import io, { Socket } from "socket.io-client";
 import SearchIcon from "@mui/icons-material/Search";
 import styled from "styled-components";
 
+const { Header, Content } = Layout;
+const { Title } = Typography;
+
 const chatRooms = [
   {
     user: "Alice",
@@ -114,7 +117,6 @@ const Home = () => {
     );
   };
 
-  return <div>{renderSideber()}</div>;
   return (
     <ChatContainer>
       <NavBar>
@@ -126,12 +128,51 @@ const Home = () => {
         <ProfileName level={5}>Tae</ProfileName>
       </NavBar>
       <MyContent>
-        <ChatList chatList={[1, 2, 3, 4, 5]} />
+        {renderSideber()}
         <ChatWindow name="Tae" messages={messages} send={send} />
       </MyContent>
     </ChatContainer>
   );
 };
+
+const ChatContainer = styled(Layout)`
+  height: 100vh;
+  width: 100vw;
+  .ant-tabs-nav {
+    margin: 0;
+  }
+  .ant-layout-header {
+    background-color: ${theme.color.white};
+    padding: 0 5vw 0 2.5vw;
+  }
+`;
+
+const NavBar = styled(Header)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid ${theme.color.border};
+`;
+
+const ChatCategory = styled.div`
+  display: flex;
+  flex-flow: row;
+  gap: 1vw;
+`;
+
+const Category = styled.div`
+  width: 50px;
+  text-align: center;
+`;
+
+const ProfileName = styled(Title)``;
+
+const MyContent = styled(Content)`
+  height: 100%;
+  overflow-y: scroll;
+  display: flex;
+  flex-flow: row;
+`;
 
 const SidebarContainer = styled.div`
   width: 20%;

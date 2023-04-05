@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import Image from "next/legacy/image";
 
@@ -103,11 +104,11 @@ const CenterContainer = styled.div`
   align-items: start;
   justify-content: space-around;
   width: 50%;
-  padding: 0 2vw;
+  padding: 0 0.5vw;
 `;
 
 const LeftContainer = styled.div`
-  width: 25%;
+  width: 20%;
   display: flex;
   justify-content: center;
   align-items: center;
