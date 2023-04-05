@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import SearchIcon from "@mui/icons-material/Search";
 import styled from "styled-components";
+import SearchInput from "../common/input/SearchInput";
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
@@ -107,10 +108,7 @@ const Home = () => {
     return (
       <SidebarContainer>
         <SidebarHeader>
-          <SearchContainer>
-            <SearchIcon sx={{ fontSize: "1.2vw" }} />
-            <StyledInput placeholder="Search for chats" />
-          </SearchContainer>
+          <SearchInput style={StyledInput} placeholder="Search for chats" />
         </SidebarHeader>
         <ChatRoomList chatRoomList={chatRooms} />
       </SidebarContainer>
@@ -177,8 +175,12 @@ const MyContent = styled(Content)`
 const SidebarContainer = styled.div`
   width: 20%;
   border: 1px solid white;
-  height: 100vh;
+  height: 100%;
   border-right: 1px solid ${theme.color.border};
+  overflow: auto;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const SidebarHeader = styled.div`
@@ -188,26 +190,8 @@ const SidebarHeader = styled.div`
   align-items: center;
 `;
 
-const SearchContainer = styled.div`
-  height: 80%;
-  width: 80%;
-  background-color: #fff;
-  display: flex;
-  align-items: center;
-  padding: 0 1rem;
-  border-radius: 6px;
-`;
-
-const StyledInput = styled.input`
-  height: 100%;
-  width: 80%;
-  background-color: #fff;
-  border: 0;
-  outline: none;
-  font-size: 1vw;
-  ::placeholder {
-    font-size: 0.7vw;
-  }
-`;
+const StyledInput = {
+  width: "80%",
+};
 
 export default Home;

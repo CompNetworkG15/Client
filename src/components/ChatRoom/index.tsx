@@ -60,7 +60,7 @@ const ChatRoomContainer = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 1rem;
-  height: 5rem;
+  height: 6rem;
   :hover {
     background-color: #fff;
   }
