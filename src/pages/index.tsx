@@ -178,6 +178,7 @@ const SidebarContainer = styled.div`
   width: 20%;
   border: 1px solid white;
   height: 100vh;
+  border-right: 1px solid ${theme.color.border};
 `;
 
 const SidebarHeader = styled.div`
@@ -190,7 +191,7 @@ const SidebarHeader = styled.div`
 const SearchContainer = styled.div`
   height: 80%;
   width: 80%;
-  background-color: #f6f6f6;
+  background-color: #fff;
   display: flex;
   align-items: center;
   padding: 0 1rem;
@@ -200,10 +201,13 @@ const SearchContainer = styled.div`
 const StyledInput = styled.input`
   height: 100%;
   width: 80%;
-  background-color: #f6f6f6;
+  background-color: #fff;
   border: 0;
   outline: none;
   font-size: 1vw;
+  ::placeholder {
+    font-size: 0.7vw;
+  }
 `;
 
 export default Home;

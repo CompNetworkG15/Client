@@ -28,7 +28,6 @@ const ChatRoomListContainer = styled.div`
   display: flex;
   flex-flow: column;
   width: 100%;
-  border-right: 1px solid ${theme.color.border};
 `;
 
 export default ChatRoomList;
