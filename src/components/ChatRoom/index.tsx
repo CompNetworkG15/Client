@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import Image from "next/legacy/image";
+import { ChatRoom as ChatRoomType } from "@/types";
+import { API } from "@/config";
 
 interface ChatRoomProps {
   user: string;
@@ -9,21 +11,14 @@ interface ChatRoomProps {
   newMessagesCount: number;
 }
 
-function ChatRoom({
-  user,
-  messages,
-  time,
-  newMessagesCount,
-}: ChatRoomProps): JSX.Element {
+function ChatRoom({ name, image }: ChatRoomType): JSX.Element {
   return (
     <ChatRoomContainer>
       <LeftContainer>
         <ImageContainer>
           <Image
-            src="https://tse3.mm.bing.net/th?id=OIP.1_qlaREyVrKpD1H5uAvAwwHaF7&pid=Api&P=0"
-            loader={() =>
-              "https://tse3.mm.bing.net/th?id=OIP.1_qlaREyVrKpD1H5uAvAwwHaF7&pid=Api&P=0"
-            }
+            src={`${API}${image}`}
+            loader={() => `${API}${image}`}
             alt=""
             layout="fill"
             objectFit="cover"
@@ -34,19 +29,18 @@ function ChatRoom({
         </ImageContainer>
       </LeftContainer>
       <CenterContainer>
-        <UserContainer>{user}</UserContainer>
+        <UserContainer>{name}</UserContainer>
         <MessageContainer>
-          {messages[messages.length - 1].length <= 18
+          message here
+          {/* {messages[messages.length - 1].length <= 18
             ? messages[messages.length - 1]
-            : `${messages[messages.length - 1].substring(0, 18)}.....`}
+            : `${messages[messages.length - 1].substring(0, 18)}.....`} */}
         </MessageContainer>
       </CenterContainer>
       <RightContainer>
-        <TimeContainer>{time}</TimeContainer>
-        {newMessagesCount > 0 ? (
-          <NewMessagesCountContainer>
-            {newMessagesCount}
-          </NewMessagesCountContainer>
+        <TimeContainer>10:00PM{/*time*/}</TimeContainer>
+        {1 > 0 ? (
+          <NewMessagesCountContainer>{1}</NewMessagesCountContainer>
         ) : (
           <NoNewMessagesCountContainer></NoNewMessagesCountContainer>
         )}
@@ -59,7 +53,7 @@ const ChatRoomContainer = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 1rem;
-  height: 6rem;
+  height: 4rem;
   :hover {
     background-color: #fff;
   }
@@ -127,6 +121,7 @@ const TimeContainer = styled.div`
 const UserContainer = styled.div`
   font-weight: bold;
   font-size: 1vw;
+  color: black;
 `;
 
 const MessageContainer = styled.div`

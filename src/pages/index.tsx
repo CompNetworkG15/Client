@@ -221,7 +221,7 @@ const MyContent = styled(Content)`
 `;
 
 const SidebarContainer = styled.div`
-  width: 20%;
+  width: 100%;
   border: 1px solid white;
   height: 100%;
   border-right: 1px solid ${theme.color.border};

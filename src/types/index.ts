@@ -1,8 +1,8 @@
 export type ChatRoom = {
-    user: string;
-    messages: string[];
-    time: string;
-    newMessagesCount: number;
+    id: number;
+    name: string;
+    image: string;
+    chatType: string;
   };
 export const ChatType = {
   DIRECT: "DIRECT",
