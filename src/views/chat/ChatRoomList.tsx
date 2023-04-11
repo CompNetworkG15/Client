@@ -1,5 +1,4 @@
 import { ChatRoom } from "@/types";
-import theme from "@/utils/theme";
 import React from "react";
 import styled from "styled-components";
 import ChatRoomComponent from "@/components/ChatRoom";

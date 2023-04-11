@@ -1,7 +1,10 @@
-import ChatRoomList from "../views/chat/ChatRoomList";
+import { API, SOCKET_URL } from "@/config";
+import { ChatType } from "@/types";
+import client from "@/utils/client";
 import theme from "@/utils/theme";
+import ChatRoomList from "@/views/chat/ChatRoomList";
 import ChatWindow from "@/views/chat/ChatWindow";
-import { Layout, TabsProps, Typography } from "antd";
+import { Layout, Typography, message } from "antd";
 import React from "react";
 import { useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
@@ -84,9 +87,11 @@ const chatRooms = [
 const Home = () => {
   const [socket, setSocket] = useState<Socket>();
   const [messages, setMessages] = useState<string[]>([]);
+  const [chatType, setChatType] = useState<ChatType>();
+  const [chatRooms, setChatRooms] = useState<any[]>([]);
 
   useEffect(() => {
-    const newSocket = io("http://localhost:2000");
+    const newSocket = io(SOCKET_URL as string);
     setSocket(newSocket);
   }, [setSocket]);
 
@@ -99,6 +104,18 @@ const Home = () => {
       socket?.off("message", messageListener);
     };
   }, [socket]);
+
+  useEffect(() => {
+    const getChatRooms = async () => {
+      try {
+        const chatRooms = await client.get(`${API}chatgroup`, { chatType });
+        setChatRooms(chatRooms.data);
+      } catch (error: any) {
+        message.error(error.message);
+      }
+    };
+    getChatRooms();
+  }, [chatType]);
 
   const send = (message: string) => {
     socket?.emit("message", message);
@@ -119,9 +136,39 @@ const Home = () => {
     <ChatContainer>
       <NavBar>
         <ChatCategory>
-          <Category>All</Category>
-          <Category>Directs</Category>
-          <Category>Groups</Category>
+          <Category
+            style={{
+              borderBottom:
+                chatType === undefined
+                  ? `2px solid ${theme.color.gray}`
+                  : undefined,
+            }}
+            onClick={() => setChatType(undefined)}
+          >
+            All
+          </Category>
+          <Category
+            style={{
+              borderBottom:
+                chatType === ChatType.DIRECT
+                  ? `2px solid ${theme.color.gray}`
+                  : undefined,
+            }}
+            onClick={() => setChatType(ChatType.DIRECT)}
+          >
+            Directs
+          </Category>
+          <Category
+            style={{
+              borderBottom:
+                chatType === ChatType.GROUP
+                  ? `2px solid ${theme.color.gray}`
+                  : undefined,
+            }}
+            onClick={() => setChatType(ChatType.GROUP)}
+          >
+            Groups
+          </Category>
         </ChatCategory>
         <ProfileName level={5}>Tae</ProfileName>
       </NavBar>
@@ -161,6 +208,7 @@ const ChatCategory = styled.div`
 const Category = styled.div`
   width: 50px;
   text-align: center;
+  cursor: pointer;
 `;
 
 const ProfileName = styled(Title)``;
@@ -168,8 +216,8 @@ const ProfileName = styled(Title)``;
 const MyContent = styled(Content)`
   height: 100%;
   overflow-y: scroll;
-  display: flex;
-  flex-flow: row;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
 `;
 
 const SidebarContainer = styled.div`
