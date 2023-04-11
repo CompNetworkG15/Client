@@ -1,9 +1,3 @@
-export type ChatRoom = {
-    id: number;
-    name: string;
-    image: string;
-    chatType: string;
-  };
 export const ChatType = {
   DIRECT: "DIRECT",
   GROUP: "GROUP",
@@ -11,4 +5,19 @@ export const ChatType = {
 
 export type ChatType = typeof ChatType[keyof typeof ChatType];
 
-export type Message = {};
+export type ChatRoom = {
+  id: number;
+  name: string;
+  image?: string;
+  chatType: ChatType;
+  members: number[];
+};
+
+export type Message = {
+  id: number;
+  content: string;
+  createdAt: Date;
+  clientId: number;
+  chatId: number;
+  name: string;
+};

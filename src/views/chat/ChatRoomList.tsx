@@ -32,7 +32,8 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({
 const ChatRoomListContainer = styled.div`
   display: flex;
   flex-flow: column;
-  width: 100%;
+  width: 200px;
+  border-right: 1px solid ${theme.color.border};
 `;
 
 export default ChatRoomList;
