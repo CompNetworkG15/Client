@@ -113,32 +113,32 @@ const ChatRoom: React.FC<ChatRoomProps> = ({
         </ImageContainer>
       </LeftContainer>
       <CenterContainer>
-        {chatType == ChatType.DIRECT ? (
-          <UserContainer>{name}</UserContainer>
-        ) : (
-          <UserContainer>{name} (3)</UserContainer>
-        )}
+        {/* {chatType == ChatType.DIRECT ? ( */}
+        <UserContainer>{name}</UserContainer>
+        {/* // ) : (
+        //   <UserContainer>{name} (3)</UserContainer>
+        // )} */}
 
         <MessageContainer>
-          {mockMessages[mockMessages.length - 1].content.length <= 18
+          {/* {mockMessages[mockMessages.length - 1].content.length <= 18
             ? mockMessages[mockMessages.length - 1].content
             : `${mockMessages[mockMessages.length - 1].content.substring(
                 0,
                 18
-              )}.....`}
+              )}.....`} */}
         </MessageContainer>
       </CenterContainer>
       <RightContainer>
         <TimeContainer>
-          {mockMessages[mockMessages.length - 1].createdAt
+          {/* {mockMessages[mockMessages.length - 1].createdAt
             .toString()
-            .substring(15, 21)}
+            .substring(15, 21)} */}
         </TimeContainer>
-        {1 > 0 ? (
-          <NewMessagesCountContainer>{1}</NewMessagesCountContainer>
-        ) : (
-          <NoNewMessagesCountContainer></NoNewMessagesCountContainer>
-        )}
+        {/* {1 > 0 ? ( */}
+        {/* <NewMessagesCountContainer>{1}</NewMessagesCountContainer> */}
+        {/* ) : ( */}
+        <NoNewMessagesCountContainer></NoNewMessagesCountContainer>
+        {/* )} */}
       </RightContainer>
     </ChatRoomContainer>
   );
