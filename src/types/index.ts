@@ -1,4 +1,4 @@
-export type Chat = {
+export type ChatRoom = {
     user: string;
     messages: string[];
     time: string;
