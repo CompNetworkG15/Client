@@ -17,6 +17,7 @@ const { Title } = Typography;
 const Home = () => {
   const [socket, setSocket] = useState<Socket>();
   const [messages, setMessages] = useState<string[]>([]);
+  const [chatName, setChatName] = useState<string>("");
   const [chatType, setChatType] = useState<ChatType>();
   const [chatRooms, setChatRooms] = useState<any[]>([]);
 
@@ -38,14 +39,17 @@ const Home = () => {
   useEffect(() => {
     const getChatRooms = async () => {
       try {
-        const chatRooms = await client.get(`${API}chatgroup`, { chatType });
+        const chatRooms = await client.get(`${API}chatgroup`, {
+          name: chatName,
+          chatType: chatType,
+        });
         setChatRooms(chatRooms.data);
       } catch (error: any) {
         message.error(error.message);
       }
     };
     getChatRooms();
-  }, [chatType]);
+  }, [chatName, chatType]);
 
   const send = (message: string) => {
     socket?.emit("message", message);
@@ -55,7 +59,11 @@ const Home = () => {
     return (
       <SidebarContainer>
         <SidebarHeader>
-          <SearchInput style={StyledInput} placeholder="Search for chats" />
+          <SearchInput
+            style={StyledInput}
+            placeholder="Search for chats"
+            onPressEnter={(e: any) => setChatName(e.target.value)}
+          />
         </SidebarHeader>
         <ChatRoomList chatRoomList={chatRooms} />
       </SidebarContainer>
