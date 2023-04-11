@@ -4,13 +4,13 @@ import React from "react";
 import styled from "styled-components";
 
 type ChatListProps = {
-  chatList: Chat[];
+  chatRooms: Chat[];
 };
 
-const ChatList: React.FC<ChatListProps> = ({ chatList }) => {
+const ChatRoomList: React.FC<ChatListProps> = ({ chatRooms }) => {
   return (
     <ChatListContainer>
-      {chatList.map((chat: Chat, idx: number) => (
+      {chatRooms.map((chat: Chat, idx: number) => (
         <div key={idx}>hello</div>
       ))}
     </ChatListContainer>
@@ -23,4 +23,4 @@ const ChatListContainer = styled.div`
   border-right: 1px solid ${theme.color.border};
 `;
 
-export default ChatList;
+export default ChatRoomList;

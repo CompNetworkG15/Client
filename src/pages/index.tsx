@@ -1,9 +1,10 @@
 import { API, SOCKET_URL } from "@/config";
+import { ChatType } from "@/types";
 import client from "@/utils/client";
 import theme from "@/utils/theme";
-import ChatList from "@/views/chat/ChatList";
+import ChatRoomList from "@/views/chat/ChatRoomList";
 import ChatWindow from "@/views/chat/ChatWindow";
-import { Layout, TabsProps, Typography } from "antd";
+import { Layout, Typography, message } from "antd";
 import React from "react";
 import { useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
@@ -15,6 +16,8 @@ const { Title } = Typography;
 const Home = () => {
   const [socket, setSocket] = useState<Socket>();
   const [messages, setMessages] = useState<string[]>([]);
+  const [chatType, setChatType] = useState<ChatType>();
+  const [chatRooms, setChatRooms] = useState<any[]>([]);
 
   useEffect(() => {
     const newSocket = io(SOCKET_URL as string);
@@ -31,30 +34,63 @@ const Home = () => {
     };
   }, [socket]);
 
+  useEffect(() => {
+    const getChatRooms = async () => {
+      try {
+        const chatRooms = await client.get(`${API}chatgroup`, { chatType });
+        setChatRooms(chatRooms.data);
+      } catch (error: any) {
+        message.error(error.message);
+      }
+    };
+    getChatRooms();
+  }, [chatType]);
+
   const send = (message: string) => {
     socket?.emit("message", message);
   };
-
-  const onChooseCategory = async (chatType?: string) => {
-    try {
-      await client.get(`${API}chatgroup`, { chatType });
-    } catch (error) {}
-  };
-
   return (
     <ChatContainer>
       <NavBar>
         <ChatCategory>
-          <Category onClick={() => onChooseCategory()}>All</Category>
-          <Category onClick={() => onChooseCategory("DIRECT")}>
+          <Category
+            style={{
+              borderBottom:
+                chatType === undefined
+                  ? `2px solid ${theme.color.gray}`
+                  : undefined,
+            }}
+            onClick={() => setChatType(undefined)}
+          >
+            All
+          </Category>
+          <Category
+            style={{
+              borderBottom:
+                chatType === ChatType.DIRECT
+                  ? `2px solid ${theme.color.gray}`
+                  : undefined,
+            }}
+            onClick={() => setChatType(ChatType.DIRECT)}
+          >
             Directs
           </Category>
-          <Category onClick={() => onChooseCategory("GROUP")}>Groups</Category>
+          <Category
+            style={{
+              borderBottom:
+                chatType === ChatType.GROUP
+                  ? `2px solid ${theme.color.gray}`
+                  : undefined,
+            }}
+            onClick={() => setChatType(ChatType.GROUP)}
+          >
+            Groups
+          </Category>
         </ChatCategory>
         <ProfileName level={5}>Tae</ProfileName>
       </NavBar>
       <MyContent>
-        <ChatList chatList={[1, 2, 3, 4, 5]} />
+        <ChatRoomList chatRooms={chatRooms} />
         <ChatWindow name="Tae" messages={messages} send={send} />
       </MyContent>
     </ChatContainer>
