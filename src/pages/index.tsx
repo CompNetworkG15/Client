@@ -62,6 +62,7 @@ const Home = () => {
           <SearchInput
             style={StyledInput}
             placeholder="Search for chats"
+            onChange={(e: any) => setChatName(e.target.value)}
             onPressEnter={(e: any) => setChatName(e.target.value)}
           />
         </SidebarHeader>
