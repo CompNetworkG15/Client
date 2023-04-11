@@ -3,11 +3,11 @@ import React from "react";
 import styled from "styled-components";
 import ChatRoomComponent from "@/components/ChatRoom";
 
-type ChatListProps = {
+type ChatRoomListProps = {
   chatRoomList: ChatRoom[];
 };
 
-const ChatRoomList: React.FC<ChatListProps> = ({ chatRoomList }) => {
+const ChatRoomList: React.FC<ChatRoomListProps> = ({ chatRoomList }) => {
   return (
     <ChatRoomListContainer>
       {chatRoomList.map((chatRoom, index) => (
