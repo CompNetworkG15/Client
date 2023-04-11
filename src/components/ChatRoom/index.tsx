@@ -1,15 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 import Image from "next/legacy/image";
-import { ChatRoom as ChatRoomType } from "@/types";
 import { API } from "@/config";
+import { ChatType } from "@/types";
 
 type ChatRoomProps = {
   name: string;
   image: string;
+  chatType: string;
 };
 
-const ChatRoom: React.FC<ChatRoomProps> = ({ name, image }) => {
+const ChatRoom: React.FC<ChatRoomProps> = ({ name, image, chatType }) => {
   return (
     <ChatRoomContainer>
       <LeftContainer>
@@ -27,7 +28,12 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ name, image }) => {
         </ImageContainer>
       </LeftContainer>
       <CenterContainer>
-        <UserContainer>{name}</UserContainer>
+        {chatType == ChatType.DIRECT ? (
+          <UserContainer>{name}</UserContainer>
+        ) : (
+          <UserContainer>{name} (3)</UserContainer>
+        )}
+
         <MessageContainer>
           message here
           {/* {messages[messages.length - 1].length <= 18

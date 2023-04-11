@@ -15,6 +15,7 @@ const ChatRoomList: React.FC<ChatListProps> = ({ chatRoomList }) => {
           key={index}
           name={chatRoom.name}
           image={chatRoom.image}
+          chatType={chatRoom.chatType}
         />
       ))}
     </ChatRoomListContainer>
