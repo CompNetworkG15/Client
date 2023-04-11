@@ -1,3 +1,5 @@
+import { API, SOCKET_URL } from "@/config";
+import client from "@/utils/client";
 import theme from "@/utils/theme";
 import ChatList from "@/views/chat/ChatList";
 import ChatWindow from "@/views/chat/ChatWindow";
@@ -15,7 +17,7 @@ const Home = () => {
   const [messages, setMessages] = useState<string[]>([]);
 
   useEffect(() => {
-    const newSocket = io("http://localhost:2000");
+    const newSocket = io(SOCKET_URL as string);
     setSocket(newSocket);
   }, [setSocket]);
 
@@ -33,13 +35,21 @@ const Home = () => {
     socket?.emit("message", message);
   };
 
+  const onChooseCategory = async (chatType?: string) => {
+    try {
+      await client.get(`${API}chatgroup`, { chatType });
+    } catch (error) {}
+  };
+
   return (
     <ChatContainer>
       <NavBar>
         <ChatCategory>
-          <Category>All</Category>
-          <Category>Directs</Category>
-          <Category>Groups</Category>
+          <Category onClick={() => onChooseCategory()}>All</Category>
+          <Category onClick={() => onChooseCategory("DIRECT")}>
+            Directs
+          </Category>
+          <Category onClick={() => onChooseCategory("GROUP")}>Groups</Category>
         </ChatCategory>
         <ProfileName level={5}>Tae</ProfileName>
       </NavBar>
@@ -79,6 +89,7 @@ const ChatCategory = styled.div`
 const Category = styled.div`
   width: 50px;
   text-align: center;
+  cursor: pointer;
 `;
 
 const ProfileName = styled(Title)``;
@@ -86,8 +97,8 @@ const ProfileName = styled(Title)``;
 const MyContent = styled(Content)`
   height: 100%;
   overflow-y: scroll;
-  display: flex;
-  flex-flow: row;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
 `;
 
 export default Home;
