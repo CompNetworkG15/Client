@@ -2,16 +2,85 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Image from "next/legacy/image";
 import { API } from "@/config";
-import { ChatType } from "@/types";
+import { ChatType, Message } from "@/types";
 import { Socket } from "socket.io-client";
-import { log } from "console";
+import useProfileStore from "@/hooks/useProfileStore";
+
+const mockMessages: Message[] = [
+  {
+    id: 1,
+    chatId: 0,
+    clientId: 1,
+    name: "John",
+    content: "Hello",
+    createdAt: new Date(),
+  },
+  {
+    id: 2,
+    chatId: 0,
+    clientId: 2,
+    name: "John",
+    content: "Hello",
+    createdAt: new Date(),
+  },
+  {
+    id: 3,
+    chatId: 0,
+    clientId: 1,
+    name: "John",
+    content: "Hello",
+    createdAt: new Date(),
+  },
+  {
+    id: 4,
+    chatId: 0,
+    clientId: 1,
+    name: "John",
+    content: "Hello",
+    createdAt: new Date(),
+  },
+  {
+    id: 5,
+    chatId: 0,
+    clientId: 1,
+    name: "John",
+    content: "Hello",
+    createdAt: new Date(),
+  },
+  {
+    id: 6,
+    chatId: 0,
+    clientId: 2,
+    name: "John",
+    content: "Hello",
+    createdAt: new Date(),
+  },
+  {
+    id: 7,
+    chatId: 0,
+    clientId: 2,
+    name: "John",
+    content:
+      "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
+    createdAt: new Date(),
+  },
+  {
+    id: 8,
+    chatId: 0,
+    clientId: 1,
+    name: "John",
+    content: "Hello",
+    createdAt: new Date(),
+  },
+];
 
 type ChatRoomProps = {
   id: number;
   name: string;
-  image: string;
+  image?: string;
   chatType: string;
   socket?: Socket;
+  messages: Message[];
 };
 
 const ChatRoom: React.FC<ChatRoomProps> = ({
@@ -20,9 +89,12 @@ const ChatRoom: React.FC<ChatRoomProps> = ({
   image,
   chatType,
   socket,
+  messages,
 }) => {
+  const clientId = useProfileStore().id;
+
   const handleClick = () => {
-    socket?.emit("join", { chatId: id, clientId: 1 });
+    socket?.emit("join", { chatId: id, clientId: clientId });
   };
   return (
     <ChatRoomContainer onClick={handleClick}>
@@ -48,14 +120,20 @@ const ChatRoom: React.FC<ChatRoomProps> = ({
         )}
 
         <MessageContainer>
-          message here
-          {/* {messages[messages.length - 1].length <= 18
-            ? messages[messages.length - 1]
-            : `${messages[messages.length - 1].substring(0, 18)}.....`} */}
+          {mockMessages[mockMessages.length - 1].content.length <= 18
+            ? mockMessages[mockMessages.length - 1].content
+            : `${mockMessages[mockMessages.length - 1].content.substring(
+                0,
+                18
+              )}.....`}
         </MessageContainer>
       </CenterContainer>
       <RightContainer>
-        <TimeContainer>10:00PM{/*time*/}</TimeContainer>
+        <TimeContainer>
+          {mockMessages[mockMessages.length - 1].createdAt
+            .toString()
+            .substring(15, 21)}
+        </TimeContainer>
         {1 > 0 ? (
           <NewMessagesCountContainer>{1}</NewMessagesCountContainer>
         ) : (
@@ -70,7 +148,7 @@ const ChatRoomContainer = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 1rem;
-  height: 13vh;
+  height: 11vh;
   :hover {
     background-color: #fff;
   }

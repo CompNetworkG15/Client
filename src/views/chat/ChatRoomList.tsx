@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import ChatRoomComponent from "@/components/ChatRoom";
 import { Socket } from "socket.io-client";
+import theme from "@/utils/theme";
 
 type ChatRoomListProps = {
   chatRoomList: ChatRoom[];
@@ -23,6 +24,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({
           image={chatRoom.image}
           chatType={chatRoom.chatType}
           socket={socket}
+          messages={chatRoom.messages}
         />
       ))}
     </ChatRoomListContainer>
@@ -32,7 +34,7 @@ const ChatRoomList: React.FC<ChatRoomListProps> = ({
 const ChatRoomListContainer = styled.div`
   display: flex;
   flex-flow: column;
-  width: 200px;
+  width: 100%;
   border-right: 1px solid ${theme.color.border};
 `;
 

@@ -2,7 +2,7 @@ import CenteredModal from "@/common/modal";
 import LoginRegisterContent from "@/components/login-register";
 import { API, SOCKET_URL } from "@/config";
 import useProfileStore from "@/hooks/useProfileStore";
-import { ChatType } from "@/types";
+import { ChatType, Message } from "@/types";
 import client from "@/utils/client";
 import theme from "@/utils/theme";
 import ChatRoomList from "@/views/chat/ChatRoomList";
@@ -21,7 +21,7 @@ const Home = () => {
   const { id, nickname } = useProfileStore();
   const [isLogin, setLogin] = useState<boolean>(false);
   const [socket, setSocket] = useState<Socket>();
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [chatName, setChatName] = useState<string>("");
   const [chatType, setChatType] = useState<ChatType>();
   const [chatRooms, setChatRooms] = useState<any[]>([]);
@@ -36,7 +36,7 @@ const Home = () => {
   }, [setSocket]);
 
   useEffect(() => {
-    const messageListener = (message: string) => {
+    const messageListener = (message: Message) => {
       setMessages((messages) => [...messages, message]);
     };
     const newJoinerListener = async (flag: boolean) => {

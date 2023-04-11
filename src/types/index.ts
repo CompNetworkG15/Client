@@ -11,6 +11,7 @@ export type ChatRoom = {
   image?: string;
   chatType: ChatType;
   members: number[];
+  messages: Message[];
 };
 
 export type Message = {
