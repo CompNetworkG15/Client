@@ -66,7 +66,7 @@ const Home = () => {
             onPressEnter={(e: any) => setChatName(e.target.value)}
           />
         </SidebarHeader>
-        <ChatRoomList chatRoomList={chatRooms} />
+        <ChatRoomList chatRoomList={chatRooms} socket={socket} />
       </SidebarContainer>
     );
   };

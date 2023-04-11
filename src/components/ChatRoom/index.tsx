@@ -1,18 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Image from "next/legacy/image";
 import { API } from "@/config";
 import { ChatType } from "@/types";
+import { Socket } from "socket.io-client";
+import { log } from "console";
 
 type ChatRoomProps = {
+  id: number;
   name: string;
   image: string;
   chatType: string;
+  socket?: Socket;
 };
 
-const ChatRoom: React.FC<ChatRoomProps> = ({ name, image, chatType }) => {
+const ChatRoom: React.FC<ChatRoomProps> = ({
+  id,
+  name,
+  image,
+  chatType,
+  socket,
+}) => {
+  const handleClick = () => {
+    socket?.emit("join", { chatId: id, clientId: 1 });
+  };
   return (
-    <ChatRoomContainer>
+    <ChatRoomContainer onClick={handleClick}>
       <LeftContainer>
         <ImageContainer>
           <Image
