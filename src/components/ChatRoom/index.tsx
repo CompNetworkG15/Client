@@ -4,7 +4,12 @@ import Image from "next/legacy/image";
 import { ChatRoom as ChatRoomType } from "@/types";
 import { API } from "@/config";
 
-function ChatRoom({ name, image }: ChatRoomType): JSX.Element {
+type ChatRoomProps = {
+  name: string;
+  image: string;
+};
+
+const ChatRoom: React.FC<ChatRoomProps> = ({ name, image }) => {
   return (
     <ChatRoomContainer>
       <LeftContainer>
@@ -40,7 +45,7 @@ function ChatRoom({ name, image }: ChatRoomType): JSX.Element {
       </RightContainer>
     </ChatRoomContainer>
   );
-}
+};
 
 const ChatRoomContainer = styled.div`
   display: flex;

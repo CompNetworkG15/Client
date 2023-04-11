@@ -13,10 +13,8 @@ const ChatRoomList: React.FC<ChatListProps> = ({ chatRoomList }) => {
       {chatRoomList.map((chatRoom, index) => (
         <ChatRoomComponent
           key={index}
-          id={chatRoom.id}
           name={chatRoom.name}
           image={chatRoom.image}
-          chatType={chatRoom.chatType}
         />
       ))}
     </ChatRoomListContainer>
