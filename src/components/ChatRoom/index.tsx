@@ -19,7 +19,6 @@ function ChatRoom({
     <ChatRoomContainer>
       <LeftContainer>
         <ImageContainer>
-          {" "}
           <Image
             src="https://tse3.mm.bing.net/th?id=OIP.1_qlaREyVrKpD1H5uAvAwwHaF7&pid=Api&P=0"
             loader={() =>
