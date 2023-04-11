@@ -4,13 +4,6 @@ import Image from "next/legacy/image";
 import { ChatRoom as ChatRoomType } from "@/types";
 import { API } from "@/config";
 
-interface ChatRoomProps {
-  user: string;
-  messages: string[];
-  time: string;
-  newMessagesCount: number;
-}
-
 function ChatRoom({ name, image }: ChatRoomType): JSX.Element {
   return (
     <ChatRoomContainer>

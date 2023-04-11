@@ -8,81 +8,11 @@ import { Layout, Typography, message } from "antd";
 import React from "react";
 import { useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
-import SearchIcon from "@mui/icons-material/Search";
 import styled from "styled-components";
 import SearchInput from "../common/input/SearchInput";
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
-
-const chatRooms = [
-  {
-    user: "Alice",
-    messages: ["Hello, Alice!", "Hi, Bob!", "What's up, Charlie?"],
-    time: "10:00 AM",
-    newMessagesCount: 1,
-  },
-  {
-    user: "Dave",
-    messages: ["Hey, Dave!", "Hi, Eve!"],
-    time: "21:00 PM",
-    newMessagesCount: 0,
-  },
-  {
-    user: "Dave",
-    messages: ["Hey, Dave!", "test test"],
-    time: "21:00 PM",
-    newMessagesCount: 0,
-  },
-  {
-    user: "Dave",
-    messages: ["Hey, Dave!", "Hi, Eve!"],
-    time: "21:00 PM",
-    newMessagesCount: 3,
-  },
-  {
-    user: "Dave",
-    messages: ["Hey, Dave!", "Eve!sssjdnjasdnsajasdmkasdmsakssss"],
-    time: "21:00 PM",
-    newMessagesCount: 0,
-  },
-  {
-    user: "Dave",
-    messages: ["Hey, Dave!", "Eve!sssjdnjasdnsajasdmkasdmsakssss"],
-    time: "21:00 PM",
-    newMessagesCount: 10,
-  },
-  {
-    user: "Dave",
-    messages: ["Hey, Dave!", "Eve!sssjdnjasdnsajasdmkasdmsakssss"],
-    time: "21:00 PM",
-    newMessagesCount: 10,
-  },
-  {
-    user: "Dave",
-    messages: ["Hey, Dave!", "Eve!sssjdnjasdnsajasdmkasdmsakssss"],
-    time: "21:00 PM",
-    newMessagesCount: 10,
-  },
-  {
-    user: "Dave",
-    messages: ["Hey, Dave!", "Eve!sssjdnjasdnsajasdmkasdmsakssss"],
-    time: "21:00 PM",
-    newMessagesCount: 10,
-  },
-  {
-    user: "Dave",
-    messages: ["Hey, Dave!", "Eve!sssjdnjasdnsajasdmkasdmsakssss"],
-    time: "21:00 PM",
-    newMessagesCount: 10,
-  },
-  {
-    user: "Dave",
-    messages: ["Hey, Dave!", "Eve!sssjdnjasdnsajasdmkasdmsakssss"],
-    time: "21:00 PM",
-    newMessagesCount: 10,
-  },
-];
 
 const Home = () => {
   const [socket, setSocket] = useState<Socket>();
