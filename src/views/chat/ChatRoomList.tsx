@@ -20,6 +20,7 @@ const ChatRoomList: React.FC<ChatListProps> = ({ chatRooms }) => {
 const ChatListContainer = styled.div`
   display: flex;
   flex-flow: column;
+  width: 200px;
   border-right: 1px solid ${theme.color.border};
 `;
 

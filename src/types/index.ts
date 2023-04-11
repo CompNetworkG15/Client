@@ -8,10 +8,16 @@ export type ChatType = typeof ChatType[keyof typeof ChatType];
 export type ChatRoom = {
   id: number;
   name: string;
+  image?: string;
+  chatType: ChatType;
+  members: number[];
 };
 
 export type Message = {
   id: number;
   content: string;
-  createdAt: string;
+  createdAt: Date;
+  clientId: number;
+  chatId: number;
+  name: string;
 };
