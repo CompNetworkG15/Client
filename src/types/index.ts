@@ -10,4 +10,8 @@ export type ChatRoom = {
   name: string;
 };
 
-export type Message = {};
+export type Message = {
+  id: number;
+  content: string;
+  createdAt: string;
+};

@@ -1,4 +1,7 @@
+import CenteredModal from "@/common/modal";
+import LoginRegisterContent from "@/components/login-register";
 import { API, SOCKET_URL } from "@/config";
+import useProfileStore from "@/hooks/useProfileStore";
 import { ChatType } from "@/types";
 import client from "@/utils/client";
 import theme from "@/utils/theme";
@@ -10,14 +13,20 @@ import { useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import styled from "styled-components";
 
-const { Header, Content } = Layout;
+const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
 
 const Home = () => {
+  const { id, nickname } = useProfileStore();
+  const [isLogin, setLogin] = useState<boolean>(false);
   const [socket, setSocket] = useState<Socket>();
   const [messages, setMessages] = useState<string[]>([]);
   const [chatType, setChatType] = useState<ChatType>();
   const [chatRooms, setChatRooms] = useState<any[]>([]);
+
+  useEffect(() => {
+    setLogin(true);
+  }, []);
 
   useEffect(() => {
     const newSocket = io(SOCKET_URL as string);
@@ -28,9 +37,21 @@ const Home = () => {
     const messageListener = (message: string) => {
       setMessages((messages) => [...messages, message]);
     };
+    const newJoinerListener = async (flag: boolean) => {
+      if (flag) {
+        try {
+          const chatRooms = await client.get(`${API}chatgroup`, { chatType });
+          setChatRooms(chatRooms.data);
+        } catch (error: any) {
+          message.error(error.message);
+        }
+      }
+    };
     socket?.on("message", messageListener);
+    socket?.on("newJoiner", newJoinerListener);
     return () => {
       socket?.off("message", messageListener);
+      socket?.off("newJoiner", newJoinerListener);
     };
   }, [socket]);
 
@@ -49,51 +70,57 @@ const Home = () => {
   const send = (message: string) => {
     socket?.emit("message", message);
   };
+
   return (
-    <ChatContainer>
-      <NavBar>
-        <ChatCategory>
-          <Category
-            style={{
-              borderBottom:
-                chatType === undefined
-                  ? `2px solid ${theme.color.gray}`
-                  : undefined,
-            }}
-            onClick={() => setChatType(undefined)}
-          >
-            All
-          </Category>
-          <Category
-            style={{
-              borderBottom:
-                chatType === ChatType.DIRECT
-                  ? `2px solid ${theme.color.gray}`
-                  : undefined,
-            }}
-            onClick={() => setChatType(ChatType.DIRECT)}
-          >
-            Directs
-          </Category>
-          <Category
-            style={{
-              borderBottom:
-                chatType === ChatType.GROUP
-                  ? `2px solid ${theme.color.gray}`
-                  : undefined,
-            }}
-            onClick={() => setChatType(ChatType.GROUP)}
-          >
-            Groups
-          </Category>
-        </ChatCategory>
-        <ProfileName level={5}>Tae</ProfileName>
-      </NavBar>
-      <MyContent>
-        <ChatRoomList chatRooms={chatRooms} />
-        <ChatWindow name="Tae" messages={messages} send={send} />
-      </MyContent>
-    </ChatContainer>
+    <>
+      <ChatContainer>
+        <NavBar>
+          <ChatCategory>
+            <Category
+              style={{
+                borderBottom:
+                  chatType === undefined
+                    ? `2px solid ${theme.color.gray}`
+                    : undefined,
+              }}
+              onClick={() => setChatType(undefined)}
+            >
+              All
+            </Category>
+            <Category
+              style={{
+                borderBottom:
+                  chatType === ChatType.DIRECT
+                    ? `2px solid ${theme.color.gray}`
+                    : undefined,
+              }}
+              onClick={() => setChatType(ChatType.DIRECT)}
+            >
+              Directs
+            </Category>
+            <Category
+              style={{
+                borderBottom:
+                  chatType === ChatType.GROUP
+                    ? `2px solid ${theme.color.gray}`
+                    : undefined,
+              }}
+              onClick={() => setChatType(ChatType.GROUP)}
+            >
+              Groups
+            </Category>
+          </ChatCategory>
+          <ProfileName level={5}>{nickname}</ProfileName>
+        </NavBar>
+        <MyContent>
+          <ChatRoomList chatRooms={chatRooms} />
+          <ChatWindow name="Tae" messages={messages} send={send} />
+          <CenteredModal open={isLogin} footer={null} closable={false}>
+            <LoginRegisterContent setLogin={setLogin} />
+          </CenteredModal>
+        </MyContent>
+      </ChatContainer>
+    </>
   );
 };
 
