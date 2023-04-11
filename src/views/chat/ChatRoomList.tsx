@@ -1,18 +1,18 @@
-import { Chat } from "@/types";
+import { ChatRoom } from "@/types";
 import theme from "@/utils/theme";
 import React from "react";
 import styled from "styled-components";
-import ChatRoom from "@/components/ChatRoom";
+import ChatRoomComponent from "@/components/ChatRoom";
 
 type ChatListProps = {
-  chatRoomList: Chat[];
+  chatRoomList: ChatRoom[];
 };
 
 const ChatRoomList: React.FC<ChatListProps> = ({ chatRoomList }) => {
   return (
     <ChatRoomListContainer>
       {chatRoomList.map((chatRoom, index) => (
-        <ChatRoom
+        <ChatRoomComponent
           key={index}
           user={chatRoom.user}
           messages={chatRoom.messages}
