@@ -1,5 +1,6 @@
 import { ContainedButton } from "@/common/button";
 import useChatStore from "@/hooks/useChatStore";
+import useProfileStore from "@/hooks/useProfileStore";
 import { Form, Input, Typography, message } from "antd";
 import React from "react";
 import styled from "styled-components";
@@ -12,11 +13,13 @@ const { Item } = Form;
 const { Title } = Typography;
 
 const CreateGroupForm: React.FC<CreateGroupFormProps> = ({ onClose }) => {
+  const { id } = useProfileStore();
   const { createChatGroup } = useChatStore();
 
   const handleFinish = async (values: { name: string }) => {
     try {
-      await createChatGroup(values.name);
+      const { name } = values;
+      await createChatGroup(id, name);
       onClose();
     } catch (err: any) {
       message.error(err.message);

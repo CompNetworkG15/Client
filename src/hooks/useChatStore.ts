@@ -12,7 +12,7 @@ type ChatStore = {
     name: string,
     chatType?: ChatType
   ) => Promise<void>;
-  createChatGroup: (name: string) => Promise<void>;
+  createChatGroup: (clientId: number, name: string) => Promise<void>;
   setCurrentChatRoom: (chatRoom: ChatRoom) => Promise<void>;
   addMessage: (message: Message) => void;
   joinChat: (chatId: number, clientId: number) => Promise<void>;
@@ -34,13 +34,16 @@ const useChatStore = create<ChatStore>((set, get) => ({
       const chatRoom = chatRooms.data.find(
         (chatRoom: ChatRoom) => chatRoom.id === currentChatRoom.id
       );
-      console.log("tae", chatRoom);
-      set({ currentChatRoom: chatRoom });
+      const messages = await client.get(`${API}chat/${currentChatRoom.id}`);
+      set({ currentChatRoom: chatRoom, messages: messages.data });
     }
     set({ chatRooms: chatRooms.data });
   },
-  createChatGroup: async (name: string) => {
-    await client.post(`${API}chatgroup`, { name, chatType: ChatType.GROUP });
+  createChatGroup: async (clientId: number, name: string) => {
+    await client.post(`${API}chatgroup/${clientId}`, {
+      name,
+      chatType: ChatType.GROUP,
+    });
   },
   setCurrentChatRoom: async (chatRoom: ChatRoom) => {
     const { id } = chatRoom;

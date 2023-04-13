@@ -142,7 +142,10 @@ const Home = () => {
                 }
                 onPressEnter={() => {
                   setEditNickNameMode(false);
-                  if (newNickName != "") editNickName(newNickName, id);
+                  if (newNickName != "") {
+                    sendFlag();
+                    editNickName(newNickName, id);
+                  }
                 }}
                 autoFocus
               ></Input>
