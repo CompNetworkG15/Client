@@ -1,26 +1,38 @@
-import { Chat } from "@/types";
-import theme from "@/utils/theme";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import ChatRoomComponent from "@/components/ChatRoom";
+import { Socket } from "socket.io-client";
+import theme from "@/utils/theme";
+import useChatStore from "@/hooks/useChatStore";
 
-type ChatListProps = {
-  chatRooms: Chat[];
+type ChatRoomListProps = {
+  socket?: Socket;
 };
 
-const ChatRoomList: React.FC<ChatListProps> = ({ chatRooms }) => {
+const ChatRoomList: React.FC<ChatRoomListProps> = ({ socket }) => {
+  const { chatRooms } = useChatStore();
+
   return (
-    <ChatListContainer>
-      {chatRooms.map((chat: Chat, idx: number) => (
-        <div key={idx}>hello</div>
+    <ChatRoomListContainer>
+      {chatRooms.map((chatRoom, index) => (
+        <ChatRoomComponent
+          key={index}
+          id={chatRoom.id}
+          name={chatRoom.name}
+          image={chatRoom.image}
+          chatType={chatRoom.chatType}
+          socket={socket}
+          messages={chatRoom.messages}
+        />
       ))}
-    </ChatListContainer>
+    </ChatRoomListContainer>
   );
 };
 
-const ChatListContainer = styled.div`
+const ChatRoomListContainer = styled.div`
   display: flex;
   flex-flow: column;
-  width: 200px;
+  width: 100%;
   border-right: 1px solid ${theme.color.border};
 `;
 
