@@ -8,6 +8,7 @@ type ProfileStore = {
   id?: number;
   login: (email: string) => Promise<void>;
   signup: (email: string, nickname: string) => Promise<void>;
+  editNickName: (nickname: string, id: number) => Promise<void>;
 };
 
 const useProfileStore = create<ProfileStore>((set, get) => ({
@@ -21,6 +22,10 @@ const useProfileStore = create<ProfileStore>((set, get) => ({
       nickname,
     });
     set({ email: data.email, id: data.id, nickname: data.nickname });
+  },
+  editNickName: async (nickname: string, id: number) => {
+    const { data } = await client.patch(`${API}client/${id}`, { nickname });
+    set({ nickname: data.nickname });
   },
 }));
 

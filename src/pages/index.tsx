@@ -1,4 +1,4 @@
-import { Layout, Typography, message } from "antd";
+import { Layout, Typography, message, Input, Space } from "antd";
 import React, { useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import styled from "styled-components";
@@ -19,11 +19,13 @@ const { Title } = Typography;
 
 const Home = () => {
   const { getChatRooms, addMessage } = useChatStore();
-  const { id, nickname } = useProfileStore();
+  const { id, nickname, editNickName } = useProfileStore();
   const [isLogin, setLogin] = useState<boolean>(false);
   const [socket, setSocket] = useState<Socket>();
   const [chatName, setChatName] = useState<string>("");
   const [chatType, setChatType] = useState<ChatType>();
+  const [editNickNameMode, setEditNickNameMode] = useState<boolean>(false);
+  const [newNickName, setNewNickName] = useState<string>("");
 
   useEffect(() => {
     setLogin(true);
@@ -138,7 +140,26 @@ const Home = () => {
               Groups
             </Category>
           </ChatCategory>
-          <ProfileName level={5}>{nickname}</ProfileName>
+          {editNickNameMode ? (
+            <Space.Compact style={{ width: "10%" }}>
+              <Input
+                type="text"
+                defaultValue={nickname}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setNewNickName(e.target.value)
+                }
+                onPressEnter={() => {
+                  setEditNickNameMode(false);
+                  if (newNickName != "") editNickName(newNickName, id);
+                }}
+                autoFocus
+              ></Input>
+            </Space.Compact>
+          ) : (
+            <ProfileName level={5} onClick={() => setEditNickNameMode(true)}>
+              {nickname}
+            </ProfileName>
+          )}
         </NavBar>
         <MyContent>
           {renderSideber()}
