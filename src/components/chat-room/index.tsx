@@ -2,32 +2,25 @@ import React from "react";
 import styled from "styled-components";
 import Image from "next/legacy/image";
 import { API } from "@/config";
-import { Message } from "@/types";
-import { Socket } from "socket.io-client";
+import { ChatRoom } from "@/types";
 import useProfileStore from "@/hooks/useProfileStore";
+import useChatStore from "@/hooks/useChatStore";
 
 type ChatRoomProps = {
-  id: number;
-  name: string;
-  image?: string;
-  chatType: string;
-  socket?: Socket;
-  messages: Message[];
+  chatRoom: ChatRoom;
+  sendJoin: (chatId: number, cliendId: number) => void;
 };
 
-const ChatRoom: React.FC<ChatRoomProps> = ({
-  id,
-  name,
-  image,
-  chatType,
-  socket,
-  messages,
-}) => {
+const ChatRoomCard: React.FC<ChatRoomProps> = ({ chatRoom, sendJoin }) => {
+  const { id, name, image } = chatRoom;
+  const { setCurrentChatRoom } = useChatStore();
   const clientId = useProfileStore().id;
 
   const handleClick = () => {
-    socket?.emit("join", { chatId: id, clientId: clientId });
+    sendJoin(id, clientId as number);
+    setCurrentChatRoom(chatRoom);
   };
+
   return (
     <ChatRoomContainer onClick={handleClick}>
       <LeftContainer>
@@ -89,4 +82,4 @@ const UserContainer = styled.div`
   color: black;
 `;
 
-export default ChatRoom;
+export default ChatRoomCard;

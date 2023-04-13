@@ -1,29 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import ChatRoomComponent from "@/components/chat-room";
-import { Socket } from "socket.io-client";
+import ChatRoom from "@/components/chat-room";
 import theme from "@/utils/theme";
 import useChatStore from "@/hooks/useChatStore";
 
 type ChatRoomListProps = {
-  socket?: Socket;
+  sendJoin: (chatId: number, cliendId: number) => void;
 };
 
-const ChatRoomList: React.FC<ChatRoomListProps> = ({ socket }) => {
+const ChatRoomList: React.FC<ChatRoomListProps> = ({ sendJoin }) => {
   const { chatRooms } = useChatStore();
 
   return (
     <ChatRoomListContainer>
       {chatRooms.map((chatRoom, index) => (
-        <ChatRoomComponent
-          key={index}
-          id={chatRoom.id}
-          name={chatRoom.name}
-          image={chatRoom.image}
-          chatType={chatRoom.chatType}
-          socket={socket}
-          messages={chatRoom.messages}
-        />
+        <ChatRoom key={index} chatRoom={chatRoom} sendJoin={sendJoin} />
       ))}
     </ChatRoomListContainer>
   );
@@ -33,7 +24,6 @@ const ChatRoomListContainer = styled.div`
   display: flex;
   flex-flow: column;
   width: 100%;
-  border-right: 1px solid ${theme.color.border};
 `;
 
 export default ChatRoomList;

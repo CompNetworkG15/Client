@@ -1,22 +1,24 @@
 import MessageBox from "@/components/chat/MessageBox";
+import useChatStore from "@/hooks/useChatStore";
 import useProfileStore from "@/hooks/useProfileStore";
 import { Message } from "@/types";
 import { Input, Typography } from "antd";
-import React, { useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import styled from "styled-components";
 
 type ChatWindowProps = {
-  name: string;
-  messages: Message[];
   send: (message: string) => void;
 };
 
 const { Title } = Typography;
 const { TextArea } = Input;
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ name, messages, send }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({ send }) => {
   const { id } = useProfileStore();
-  const [message, setMessage] = React.useState<string>();
+  const { currentChatRoom } = useChatStore();
+  const name = currentChatRoom?.name;
+  const messages = currentChatRoom?.messages;
+  const [message, setMessage] = useState<string>();
 
   const header = useMemo(
     () => (
@@ -27,148 +29,17 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ name, messages, send }) => {
     [name]
   );
 
-  const mockMessages: Message[] = [
-    {
-      id: 1,
-      chatId: 0,
-      clientId: 1,
-      nickname: "John",
-      content: "Hello",
-      createdAt: new Date(),
-    },
-    {
-      id: 2,
-      chatId: 0,
-      clientId: 2,
-      nickname: "John",
-      content: "Hello",
-      createdAt: new Date(),
-    },
-    {
-      id: 3,
-      chatId: 0,
-      clientId: 1,
-      nickname: "John",
-      content: "Hello",
-      createdAt: new Date(),
-    },
-    {
-      id: 4,
-      chatId: 0,
-      clientId: 1,
-      nickname: "John",
-      content: "Hello",
-      createdAt: new Date(),
-    },
-    {
-      id: 5,
-      chatId: 0,
-      clientId: 1,
-      nickname: "John",
-      content: "Hello",
-      createdAt: new Date(),
-    },
-    {
-      id: 6,
-      chatId: 0,
-      clientId: 2,
-      nickname: "John",
-      content: "Hello",
-      createdAt: new Date(),
-    },
-    {
-      id: 7,
-      chatId: 0,
-      clientId: 2,
-      nickname: "John",
-      content:
-        "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
-      createdAt: new Date(),
-    },
-    {
-      id: 8,
-      chatId: 0,
-      clientId: 1,
-      nickname: "John",
-      content: "Hello",
-      createdAt: new Date(),
-    },
-    {
-      id: 9,
-      chatId: 0,
-      clientId: 1,
-      nickname: "John",
-      content: "Hello",
-      createdAt: new Date(),
-    },
-    {
-      id: 10,
-      chatId: 0,
-      clientId: 2,
-      nickname: "John",
-      content: "Hello",
-      createdAt: new Date(),
-    },
-    {
-      id: 11,
-      chatId: 0,
-      clientId: 3,
-      nickname: "Mary",
-      content: "Hello",
-      createdAt: new Date(),
-    },
-    {
-      id: 11,
-      chatId: 0,
-      clientId: 3,
-      nickname: "Mary",
-      content: "Hello",
-      createdAt: new Date(),
-    },
-    {
-      id: 11,
-      chatId: 0,
-      clientId: 3,
-      nickname: "Mary",
-      content: "Hello",
-      createdAt: new Date(),
-    },
-    {
-      id: 11,
-      chatId: 0,
-      clientId: 3,
-      nickname: "Mary",
-      content: "Hello",
-      createdAt: new Date(),
-    },
-    {
-      id: 11,
-      chatId: 0,
-      clientId: 3,
-      nickname: "Mary",
-      content: "Hello",
-      createdAt: new Date(),
-    },
-    {
-      id: 11,
-      chatId: 0,
-      clientId: 3,
-      nickname: "Mary",
-      content: "Hello",
-      createdAt: new Date(),
-    },
-  ];
-
   const chatContent = useMemo(
     () => (
       <ChatContent>
-        {mockMessages.map((message: Message, idx) => (
-          <MessageBox
-            key={idx}
-            message={message}
-            isOwner={message.clientId == id}
-          />
-        ))}
+        {messages &&
+          messages.map((message: Message, idx) => (
+            <MessageBox
+              key={idx}
+              message={message}
+              isOwner={message.clientId == id}
+            />
+          ))}
       </ChatContent>
     ),
     [messages, id]
@@ -188,6 +59,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ name, messages, send }) => {
     ),
     [send, message]
   );
+  if (!currentChatRoom) return <></>;
 
   return (
     <ChatContainer>

@@ -77,6 +77,10 @@ const Home = () => {
     socket?.emit("newJoiner", true);
   };
 
+  const sendJoin = (chatId: number, cliendId: number) => {
+    socket?.emit("join", { chatId, cliendId });
+  };
+
   const renderSideber = () => {
     return (
       <SidebarContainer>
@@ -91,7 +95,7 @@ const Home = () => {
             onPressEnter={() => getChatRooms(id, chatName, chatType)}
           />
         </SidebarHeader>
-        <ChatRoomList socket={socket} />
+        <ChatRoomList sendJoin={sendJoin} />
       </SidebarContainer>
     );
   };
