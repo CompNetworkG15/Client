@@ -14,7 +14,7 @@ const { Title, Paragraph, Text } = Typography;
 
 const MessageBox: React.FC<MessageBoxProps> = ({ message, isOwner }) => {
   const { content, createdAt, clientId, nickname } = message;
-  console.log(nickname, message);
+
   return (
     <Box isOwner={isOwner}>
       {!isOwner && <Title level={5}>{nickname}</Title>}

@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { ChatRoom } from "@/types";
+import { ChatType, ChatRoom } from "@/types";
 import useProfileStore from "@/hooks/useProfileStore";
 import useChatStore from "@/hooks/useChatStore";
 import { Typography } from "antd";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import PeopleIcon from "@mui/icons-material/People";
 
 type ChatRoomProps = {
   chatRoom: ChatRoom;
@@ -14,7 +15,7 @@ type ChatRoomProps = {
 const { Title } = Typography;
 
 const ChatRoomCard: React.FC<ChatRoomProps> = ({ chatRoom, sendJoin }) => {
-  const { id, name, image } = chatRoom;
+  const { id, name, image, chatType } = chatRoom;
   const { setCurrentChatRoom } = useChatStore();
   const clientId = useProfileStore().id;
 
@@ -25,7 +26,11 @@ const ChatRoomCard: React.FC<ChatRoomProps> = ({ chatRoom, sendJoin }) => {
 
   return (
     <ChatRoomContainer onClick={handleClick}>
-      <AccountCircleIcon sx={{ color: "black", justifySelf: "center" }} />
+      {chatType === ChatType.DIRECT ? (
+        <AccountCircleIcon sx={{ color: "black", justifySelf: "center" }} />
+      ) : (
+        <PeopleIcon sx={{ color: "black", justifySelf: "center" }} />
+      )}
       <Title level={5}>{name}</Title>
     </ChatRoomContainer>
   );

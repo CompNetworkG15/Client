@@ -107,34 +107,19 @@ const Home = () => {
         <NavBar>
           <ChatCategory>
             <Category
-              style={{
-                borderBottom:
-                  chatType === undefined
-                    ? `2px solid ${theme.color.gray}`
-                    : undefined,
-              }}
+              isSelected={chatType === undefined}
               onClick={() => setChatType(undefined)}
             >
               All
             </Category>
             <Category
-              style={{
-                borderBottom:
-                  chatType === ChatType.DIRECT
-                    ? `2px solid ${theme.color.gray}`
-                    : undefined,
-              }}
+              isSelected={chatType === ChatType.DIRECT}
               onClick={() => setChatType(ChatType.DIRECT)}
             >
               Directs
             </Category>
             <Category
-              style={{
-                borderBottom:
-                  chatType === ChatType.GROUP
-                    ? `2px solid ${theme.color.gray}`
-                    : undefined,
-              }}
+              isSelected={chatType === ChatType.GROUP}
               onClick={() => setChatType(ChatType.GROUP)}
             >
               Groups
@@ -200,10 +185,11 @@ const ChatCategory = styled.div`
   gap: 1vw;
 `;
 
-const Category = styled.div`
+const Category = styled.div<{ isSelected: boolean }>`
   width: 50px;
   text-align: center;
   cursor: pointer;
+  border-bottom: ${(p) => p.isSelected && `2px solid ${theme.color.gray}`};
 `;
 
 const ProfileName = styled(Title)``;
