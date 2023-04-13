@@ -10,12 +10,13 @@ import styled from "styled-components";
 
 type ChatWindowProps = {
   send: (message: string, chatId: number) => void;
+  fetchChatRooms: () => Promise<void>;
 };
 
 const { Title } = Typography;
 const { TextArea } = Input;
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ send }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({ send, fetchChatRooms }) => {
   const { id } = useProfileStore();
   const { currentChatRoom, messages, joinChat } = useChatStore();
   const name = currentChatRoom?.name;
@@ -70,6 +71,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ send }) => {
           onClick={async () => {
             if (currentChatRoom && id) {
               await joinChat(currentChatRoom!.id, id);
+              await fetchChatRooms();
               setMember(true);
             }
           }}
