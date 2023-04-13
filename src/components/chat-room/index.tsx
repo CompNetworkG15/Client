@@ -1,15 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import Image from "next/legacy/image";
-import { API } from "@/config";
 import { ChatRoom } from "@/types";
 import useProfileStore from "@/hooks/useProfileStore";
 import useChatStore from "@/hooks/useChatStore";
+import { Typography } from "antd";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 type ChatRoomProps = {
   chatRoom: ChatRoom;
   sendJoin: (chatId: number, cliendId: number) => void;
 };
+
+const { Title } = Typography;
 
 const ChatRoomCard: React.FC<ChatRoomProps> = ({ chatRoom, sendJoin }) => {
   const { id, name, image } = chatRoom;
@@ -23,63 +25,24 @@ const ChatRoomCard: React.FC<ChatRoomProps> = ({ chatRoom, sendJoin }) => {
 
   return (
     <ChatRoomContainer onClick={handleClick}>
-      <LeftContainer>
-        <ImageContainer>
-          <Image
-            src={`${API}${image}`}
-            loader={() => `${API}${image}`}
-            alt=""
-            layout="fill"
-            objectFit="cover"
-            objectPosition="center"
-            crossOrigin="anonymous"
-            style={{ borderRadius: "50%" }}
-          />
-        </ImageContainer>
-      </LeftContainer>
-      <RightContainer>
-        <UserContainer>{name}</UserContainer>
-      </RightContainer>
+      <AccountCircleIcon sx={{ color: "black", justifySelf: "center" }} />
+      <Title level={5}>{name}</Title>
     </ChatRoomContainer>
   );
 };
 
 const ChatRoomContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 0.5rem 1rem;
-  height: 11vh;
-  :hover {
-    background-color: #fff;
-  }
-`;
-
-const RightContainer = styled.div`
-  display: flex;
-  flex-flow: column;
-  align-items: start;
-  justify-content: space-around;
-  width: 70%;
-  padding: 0 0.5vw;
-`;
-
-const LeftContainer = styled.div`
-  width: 30%;
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 3fr 7fr;
+  padding: 10px 20px;
+  height: 75px;
   align-items: center;
-`;
-
-const ImageContainer = styled.div`
-  position: relative;
-  height: 3vw;
-  width: 3vw;
-`;
-
-const UserContainer = styled.div`
-  font-weight: bold;
-  font-size: 1vw;
-  color: black;
+  :hover {
+    background-color: white;
+  }
+  .ant-typography {
+    margin: 0;
+  }
 `;
 
 export default ChatRoomCard;
