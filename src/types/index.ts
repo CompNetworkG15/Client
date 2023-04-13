@@ -5,12 +5,18 @@ export const ChatType = {
 
 export type ChatType = typeof ChatType[keyof typeof ChatType];
 
+export type ChatMember = {
+  id: number;
+  image?: string;
+  nickname: string;
+};
+
 export type ChatRoom = {
   id: number;
   name: string;
   image?: string;
   chatType: ChatType;
-  members: number[];
+  chatMembers: ChatMember[];
   messages: Message[];
 };
 

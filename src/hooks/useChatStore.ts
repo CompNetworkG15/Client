@@ -15,12 +15,14 @@ type ChatStore = {
   createChatGroup: (name: string) => Promise<void>;
   setCurrentChatRoom: (chatRoom: ChatRoom) => Promise<void>;
   addMessage: (message: Message) => void;
+  joinChat: (chatId: number, clientId: number) => Promise<void>;
 };
 
 const useChatStore = create<ChatStore>((set, get) => ({
   chatRooms: [],
   messages: [],
   getChatRooms: async (clientId: number, name: string, chatType?: ChatType) => {
+    const { currentChatRoom } = get();
     const chatRooms = await client.get(
       `${API}chatgroup/all-group/${clientId}`,
       {
@@ -28,6 +30,13 @@ const useChatStore = create<ChatStore>((set, get) => ({
         chatType,
       }
     );
+    if (currentChatRoom) {
+      const chatRoom = chatRooms.data.find(
+        (chatRoom: ChatRoom) => chatRoom.id === currentChatRoom.id
+      );
+      console.log("tae", chatRoom);
+      set({ currentChatRoom: chatRoom });
+    }
     set({ chatRooms: chatRooms.data });
   },
   createChatGroup: async (name: string) => {
@@ -39,8 +48,12 @@ const useChatStore = create<ChatStore>((set, get) => ({
     set({ currentChatRoom: chatRoom, messages: messages.data });
   },
   addMessage: (message: Message) => {
-    const { messages } = get();
-    set({ messages: [...messages, message] });
+    const { messages, currentChatRoom } = get();
+    if (currentChatRoom && message.chatId === currentChatRoom.id)
+      set({ messages: [...messages, message] });
+  },
+  joinChat: async (chatId: number, clientId: number) => {
+    await client.post(`${API}chatgroup/join`, { chatId, clientId });
   },
 }));
 

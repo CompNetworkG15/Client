@@ -81,8 +81,13 @@ const Home = () => {
     socket?.emit("newJoiner", true);
   };
 
-  const sendJoin = (chatId: number, cliendId: number) => {
-    socket?.emit("join", { chatId, cliendId });
+  const sendJoin = async (chatId: number, cliendId: number) => {
+    try {
+      socket?.emit("join", { chatId, cliendId });
+      await getChatRooms(id, chatName, chatType);
+    } catch (error: any) {
+      message.error(error.message);
+    }
   };
 
   const renderSideber = () => {

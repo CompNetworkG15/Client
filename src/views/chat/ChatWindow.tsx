@@ -1,3 +1,5 @@
+import { ContainedButton } from "@/common/button";
+import CenteredModal from "@/common/modal";
 import MessageBox from "@/components/chat/MessageBox";
 import useChatStore from "@/hooks/useChatStore";
 import useProfileStore from "@/hooks/useProfileStore";
@@ -15,10 +17,20 @@ const { TextArea } = Input;
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ send }) => {
   const { id } = useProfileStore();
-  const { currentChatRoom, messages } = useChatStore();
+  const { currentChatRoom, messages, joinChat } = useChatStore();
   const name = currentChatRoom?.name;
   const messagesEndRef = useRef(null);
   const [message, setMessage] = useState<string>();
+  const [isMember, setMember] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (id && currentChatRoom) {
+      const allMembers = currentChatRoom.chatMembers.map((member) => member.id);
+      if (!allMembers.includes(id)) {
+        setMember(false);
+      }
+    }
+  }, [id, currentChatRoom]);
 
   useEffect(() => {
     // Scroll the div to the bottom
@@ -50,6 +62,23 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ send }) => {
     [messages, id]
   );
 
+  const joinGroup = useMemo(
+    () => (
+      <JoinChatContainer>
+        <ContainedButton
+          text="Join"
+          onClick={async () => {
+            if (currentChatRoom && id) {
+              await joinChat(currentChatRoom!.id, id);
+              setMember(true);
+            }
+          }}
+        />
+      </JoinChatContainer>
+    ),
+    [currentChatRoom, id, joinChat]
+  );
+
   const chatTextArea = useMemo(() => {
     const handleKeyDown = (e) => {
       if (e.keyCode === 13 && !e.shiftKey) {
@@ -67,16 +96,18 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ send }) => {
         onChange={(e) => setMessage(e.target.value)}
         autoSize={{ minRows: 5, maxRows: 7 }}
         onKeyDown={handleKeyDown}
+        disabled={!isMember}
       />
     );
-  }, [send, message]);
+  }, [send, message, isMember]);
+
   if (!currentChatRoom) return <></>;
 
   return (
     <ChatContainer>
       <Main>
         {header}
-        {chatContent}
+        {isMember ? chatContent : joinGroup}
       </Main>
       <Footer>{chatTextArea}</Footer>
     </ChatContainer>
@@ -109,6 +140,12 @@ const ChatContent = styled.div`
   padding: 10px;
   overflow-y: scroll;
   gap: 10px;
+`;
+
+const JoinChatContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
 `;
 
 const Main = styled.div`
