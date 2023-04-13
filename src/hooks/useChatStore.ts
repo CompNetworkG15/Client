@@ -12,6 +12,7 @@ type ChatStore = {
     name: string,
     chatType?: ChatType
   ) => Promise<void>;
+  createChatGroup: (name: string) => Promise<void>;
   setCurrentChatRoom: (chatRoom: ChatRoom) => Promise<void>;
   addMessage: (message: Message) => void;
 };
@@ -28,6 +29,9 @@ const useChatStore = create<ChatStore>((set, get) => ({
       }
     );
     set({ chatRooms: chatRooms.data });
+  },
+  createChatGroup: async (name: string) => {
+    await client.post(`${API}chatgroup`, { name, chatType: ChatType.GROUP });
   },
   setCurrentChatRoom: async (chatRoom: ChatRoom) => {
     const { id } = chatRoom;

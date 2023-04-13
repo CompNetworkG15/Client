@@ -13,6 +13,8 @@ import { ChatType, Message } from "@/types";
 import theme from "@/utils/theme";
 import ChatRoomList from "@/views/chat/ChatRoomList";
 import ChatWindow from "@/views/chat/ChatWindow";
+import { OutlinedButton } from "@/common/button";
+import CreateGroupForm from "@/components/create-group";
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
@@ -25,6 +27,7 @@ const Home = () => {
   const [chatName, setChatName] = useState<string>("");
   const [chatType, setChatType] = useState<ChatType>();
   const [editNickNameMode, setEditNickNameMode] = useState<boolean>(false);
+  const [creatingGroup, setCreatingGroup] = useState<boolean>(false);
   const [newNickName, setNewNickName] = useState<string>("");
 
   useEffect(() => {
@@ -124,6 +127,10 @@ const Home = () => {
             >
               Groups
             </Category>
+            <OutlinedButton
+              text="Create Group"
+              onClick={() => setCreatingGroup(true)}
+            />
           </ChatCategory>
           {editNickNameMode ? (
             <Space.Compact style={{ width: "10%" }}>
@@ -151,6 +158,19 @@ const Home = () => {
           <ChatWindow send={send} />
           <CenteredModal open={isLogin} footer={null} closable={false}>
             <LoginRegisterContent sendFlag={sendFlag} setLogin={setLogin} />
+          </CenteredModal>
+          <CenteredModal
+            open={creatingGroup}
+            title="Create Group"
+            footer={null}
+            onCancel={() => setCreatingGroup(false)}
+          >
+            <CreateGroupForm
+              onClose={() => {
+                sendFlag();
+                setCreatingGroup(false);
+              }}
+            />
           </CenteredModal>
         </MyContent>
       </ChatContainer>
@@ -183,6 +203,7 @@ const ChatCategory = styled.div`
   display: flex;
   flex-flow: row;
   gap: 1vw;
+  align-items: center;
 `;
 
 const Category = styled.div<{ isSelected: boolean }>`
