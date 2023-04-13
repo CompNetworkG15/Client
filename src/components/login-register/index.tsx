@@ -6,12 +6,14 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 type LoginRegisterContentProps = {
+  sendFlag: () => void;
   setLogin: (isLogin: boolean) => void;
 };
 
 const { Title, Text } = Typography;
 
 const LoginRegisterContent: React.FC<LoginRegisterContentProps> = ({
+  sendFlag,
   setLogin,
 }) => {
   const { login, signup } = useProfileStore();
@@ -23,6 +25,7 @@ const LoginRegisterContent: React.FC<LoginRegisterContentProps> = ({
     try {
       if (email && email !== "" && nickname && nickname !== "") {
         await signup(email, nickname);
+        sendFlag();
         setLogin(false);
       }
     } catch (err: any) {
@@ -34,6 +37,7 @@ const LoginRegisterContent: React.FC<LoginRegisterContentProps> = ({
     try {
       if (email && email !== "") {
         await login(email);
+        sendFlag();
         setLogin(false);
       }
     } catch (err: any) {

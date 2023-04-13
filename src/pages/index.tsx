@@ -1,21 +1,20 @@
+import { Layout, Typography, message } from "antd";
+import React, { useEffect, useState } from "react";
+import io, { Socket } from "socket.io-client";
+import styled from "styled-components";
+
+import { SearchInput } from "@/common/input";
 import CenteredModal from "@/common/modal";
 import LoginRegisterContent from "@/components/login-register";
-import { API, SOCKET_URL } from "@/config";
+import { SOCKET_URL } from "@/config";
 import useProfileStore from "@/hooks/useProfileStore";
-import { ChatRoom, ChatType, Message } from "@/types";
-import client from "@/utils/client";
+import useChatStore from "@/hooks/useChatStore";
+import { ChatType, Message } from "@/types";
 import theme from "@/utils/theme";
 import ChatRoomList from "@/views/chat/ChatRoomList";
 import ChatWindow from "@/views/chat/ChatWindow";
-import { Layout, Typography, message } from "antd";
-import React from "react";
-import { useEffect, useState } from "react";
-import io, { Socket } from "socket.io-client";
-import styled from "styled-components";
-import SearchInput from "../common/input/SearchInput";
-import useChatStore from "@/hooks/useChatStore";
 
-const { Header, Content, Footer } = Layout;
+const { Header, Content } = Layout;
 const { Title } = Typography;
 
 const Home = () => {
@@ -26,7 +25,6 @@ const Home = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [chatName, setChatName] = useState<string>("");
   const [chatType, setChatType] = useState<ChatType>();
-  const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
 
   useEffect(() => {
     setLogin(true);
@@ -56,7 +54,7 @@ const Home = () => {
       socket?.off("message", messageListener);
       socket?.off("newJoiner", newJoinerListener);
     };
-  }, [socket]);
+  }, [id, socket]);
 
   useEffect(() => {
     const fetchChatRooms: any = async () => {
@@ -75,6 +73,10 @@ const Home = () => {
     socket?.emit("message", message);
   };
 
+  const sendFlag = () => {
+    socket?.emit("newJoiner", true);
+  };
+
   const renderSideber = () => {
     return (
       <SidebarContainer>
@@ -82,7 +84,11 @@ const Home = () => {
           <SearchInput
             style={StyledInput}
             placeholder="Search for chats"
-            onPressEnter={(value: string) => getChatRooms(id, value, chatType)}
+            value={chatName}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setChatName(e.target.value)
+            }
+            onPressEnter={() => getChatRooms(id, chatName, chatType)}
           />
         </SidebarHeader>
         <ChatRoomList socket={socket} />
@@ -135,7 +141,7 @@ const Home = () => {
           {renderSideber()}
           <ChatWindow name="Tae" messages={messages} send={send} />
           <CenteredModal open={isLogin} footer={null} closable={false}>
-            <LoginRegisterContent setLogin={setLogin} />
+            <LoginRegisterContent sendFlag={sendFlag} setLogin={setLogin} />
           </CenteredModal>
         </MyContent>
       </ChatContainer>
