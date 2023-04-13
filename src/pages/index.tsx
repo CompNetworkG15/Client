@@ -2,7 +2,7 @@ import CenteredModal from "@/common/modal";
 import LoginRegisterContent from "@/components/login-register";
 import { API, SOCKET_URL } from "@/config";
 import useProfileStore from "@/hooks/useProfileStore";
-import { ChatType, Message } from "@/types";
+import { ChatRoom, ChatType, Message } from "@/types";
 import client from "@/utils/client";
 import theme from "@/utils/theme";
 import ChatRoomList from "@/views/chat/ChatRoomList";
@@ -13,18 +13,20 @@ import { useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import styled from "styled-components";
 import SearchInput from "../common/input/SearchInput";
+import useChatStore from "@/hooks/useChatStore";
 
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
 
 const Home = () => {
+  const { getChatRooms } = useChatStore();
   const { id, nickname } = useProfileStore();
   const [isLogin, setLogin] = useState<boolean>(false);
   const [socket, setSocket] = useState<Socket>();
   const [messages, setMessages] = useState<Message[]>([]);
   const [chatName, setChatName] = useState<string>("");
   const [chatType, setChatType] = useState<ChatType>();
-  const [chatRooms, setChatRooms] = useState<any[]>([]);
+  const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
 
   useEffect(() => {
     setLogin(true);
@@ -40,10 +42,9 @@ const Home = () => {
       setMessages((messages) => [...messages, message]);
     };
     const newJoinerListener = async (flag: boolean) => {
-      if (flag) {
+      if (flag && id) {
         try {
-          const chatRooms = await client.get(`${API}chatgroup`, { chatType });
-          setChatRooms(chatRooms.data);
+          await getChatRooms(id, chatName, chatType);
         } catch (error: any) {
           message.error(error.message);
         }
@@ -58,19 +59,17 @@ const Home = () => {
   }, [socket]);
 
   useEffect(() => {
-    const getChatRooms = async () => {
-      try {
-        const chatRooms = await client.get(`${API}chatgroup`, {
-          name: chatName,
-          chatType: chatType,
-        });
-        setChatRooms(chatRooms.data);
-      } catch (error: any) {
-        message.error(error.message);
+    const fetchChatRooms: any = async () => {
+      if (id) {
+        try {
+          await getChatRooms(id, chatName, chatType);
+        } catch (error: any) {
+          message.error(error.message);
+        }
       }
     };
-    getChatRooms();
-  }, [chatName, chatType]);
+    fetchChatRooms();
+  }, [id, chatName, chatType]);
 
   const send = (message: string) => {
     socket?.emit("message", message);
@@ -83,11 +82,10 @@ const Home = () => {
           <SearchInput
             style={StyledInput}
             placeholder="Search for chats"
-            onChange={(e: any) => setChatName(e.target.value)}
-            onPressEnter={(e: any) => setChatName(e.target.value)}
+            onPressEnter={(value: string) => getChatRooms(id, value, chatType)}
           />
         </SidebarHeader>
-        <ChatRoomList chatRoomList={chatRooms} socket={socket} />
+        <ChatRoomList socket={socket} />
       </SidebarContainer>
     );
   };
@@ -148,6 +146,8 @@ const Home = () => {
 const ChatContainer = styled(Layout)`
   height: 100vh;
   width: 100vw;
+  display: grid;
+  grid-template-rows: 64px 1fr;
   .ant-tabs-nav {
     margin: 0;
   }
@@ -179,8 +179,6 @@ const Category = styled.div`
 const ProfileName = styled(Title)``;
 
 const MyContent = styled(Content)`
-  height: 100%;
-  overflow-y: scroll;
   display: grid;
   grid-template-columns: 1fr 3fr;
 `;
@@ -188,7 +186,6 @@ const MyContent = styled(Content)`
 const SidebarContainer = styled.div`
   width: 100%;
   border: 1px solid white;
-  height: 100%;
   border-right: 1px solid ${theme.color.border};
   overflow: auto;
   ::-webkit-scrollbar {

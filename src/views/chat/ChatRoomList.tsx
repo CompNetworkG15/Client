@@ -1,22 +1,20 @@
-import { ChatRoom } from "@/types";
 import React, { useState } from "react";
 import styled from "styled-components";
 import ChatRoomComponent from "@/components/ChatRoom";
 import { Socket } from "socket.io-client";
 import theme from "@/utils/theme";
+import useChatStore from "@/hooks/useChatStore";
 
 type ChatRoomListProps = {
-  chatRoomList: ChatRoom[];
   socket?: Socket;
 };
 
-const ChatRoomList: React.FC<ChatRoomListProps> = ({
-  chatRoomList,
-  socket,
-}) => {
+const ChatRoomList: React.FC<ChatRoomListProps> = ({ socket }) => {
+  const { chatRooms } = useChatStore();
+
   return (
     <ChatRoomListContainer>
-      {chatRoomList.map((chatRoom, index) => (
+      {chatRooms.map((chatRoom, index) => (
         <ChatRoomComponent
           key={index}
           id={chatRoom.id}

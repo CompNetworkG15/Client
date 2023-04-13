@@ -32,7 +32,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ name, messages, send }) => {
       id: 1,
       chatId: 0,
       clientId: 1,
-      name: "John",
+      nickname: "John",
       content: "Hello",
       createdAt: new Date(),
     },
@@ -40,7 +40,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ name, messages, send }) => {
       id: 2,
       chatId: 0,
       clientId: 2,
-      name: "John",
+      nickname: "John",
       content: "Hello",
       createdAt: new Date(),
     },
@@ -48,7 +48,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ name, messages, send }) => {
       id: 3,
       chatId: 0,
       clientId: 1,
-      name: "John",
+      nickname: "John",
       content: "Hello",
       createdAt: new Date(),
     },
@@ -56,7 +56,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ name, messages, send }) => {
       id: 4,
       chatId: 0,
       clientId: 1,
-      name: "John",
+      nickname: "John",
       content: "Hello",
       createdAt: new Date(),
     },
@@ -64,7 +64,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ name, messages, send }) => {
       id: 5,
       chatId: 0,
       clientId: 1,
-      name: "John",
+      nickname: "John",
       content: "Hello",
       createdAt: new Date(),
     },
@@ -72,7 +72,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ name, messages, send }) => {
       id: 6,
       chatId: 0,
       clientId: 2,
-      name: "John",
+      nickname: "John",
       content: "Hello",
       createdAt: new Date(),
     },
@@ -80,7 +80,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ name, messages, send }) => {
       id: 7,
       chatId: 0,
       clientId: 2,
-      name: "John",
+      nickname: "John",
       content:
         "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
       createdAt: new Date(),
@@ -89,7 +89,71 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ name, messages, send }) => {
       id: 8,
       chatId: 0,
       clientId: 1,
-      name: "John",
+      nickname: "John",
+      content: "Hello",
+      createdAt: new Date(),
+    },
+    {
+      id: 9,
+      chatId: 0,
+      clientId: 1,
+      nickname: "John",
+      content: "Hello",
+      createdAt: new Date(),
+    },
+    {
+      id: 10,
+      chatId: 0,
+      clientId: 2,
+      nickname: "John",
+      content: "Hello",
+      createdAt: new Date(),
+    },
+    {
+      id: 11,
+      chatId: 0,
+      clientId: 3,
+      nickname: "Mary",
+      content: "Hello",
+      createdAt: new Date(),
+    },
+    {
+      id: 11,
+      chatId: 0,
+      clientId: 3,
+      nickname: "Mary",
+      content: "Hello",
+      createdAt: new Date(),
+    },
+    {
+      id: 11,
+      chatId: 0,
+      clientId: 3,
+      nickname: "Mary",
+      content: "Hello",
+      createdAt: new Date(),
+    },
+    {
+      id: 11,
+      chatId: 0,
+      clientId: 3,
+      nickname: "Mary",
+      content: "Hello",
+      createdAt: new Date(),
+    },
+    {
+      id: 11,
+      chatId: 0,
+      clientId: 3,
+      nickname: "Mary",
+      content: "Hello",
+      createdAt: new Date(),
+    },
+    {
+      id: 11,
+      chatId: 0,
+      clientId: 3,
+      nickname: "Mary",
       content: "Hello",
       createdAt: new Date(),
     },
@@ -137,10 +201,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ name, messages, send }) => {
 };
 
 const ChatContainer = styled.div`
-  height: 100%;
+  max-height: 100%;
   display: flex;
   flex-flow: column;
   justify-content: space-between;
+  overflow-y: scroll;
 `;
 
 const ChatHeader = styled.div`
