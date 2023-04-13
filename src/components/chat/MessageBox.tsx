@@ -10,14 +10,17 @@ type MessageBoxProps = {
   isOwner: boolean;
 };
 
-const { Title, Text } = Typography;
+const { Title, Paragraph, Text } = Typography;
 
 const MessageBox: React.FC<MessageBoxProps> = ({ message, isOwner }) => {
   const { content, createdAt, clientId, nickname } = message;
+  console.log(nickname, message);
   return (
     <Box isOwner={isOwner}>
       {!isOwner && <Title level={5}>{nickname}</Title>}
-      <MessageContent>{content}</MessageContent>
+      <MessageContent>
+        <Paragraph>{content}</Paragraph>
+      </MessageContent>
       <TimeWrapper>
         <Text>{dayjs(createdAt).format("HH:mm")}</Text>
       </TimeWrapper>
@@ -32,6 +35,7 @@ const Box = styled.div<{ isOwner: boolean }>`
   gap: 10px;
   color: black;
   .ant-typography {
+    white-space: pre-wrap;
     margin: 0;
   }
 `;

@@ -3,11 +3,11 @@ import useChatStore from "@/hooks/useChatStore";
 import useProfileStore from "@/hooks/useProfileStore";
 import { Message } from "@/types";
 import { Input, Typography } from "antd";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import styled from "styled-components";
 
 type ChatWindowProps = {
-  send: (message: string) => void;
+  send: (message: string, chatId: number) => void;
 };
 
 const { Title } = Typography;
@@ -15,10 +15,16 @@ const { TextArea } = Input;
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ send }) => {
   const { id } = useProfileStore();
-  const { currentChatRoom } = useChatStore();
+  const { currentChatRoom, messages } = useChatStore();
   const name = currentChatRoom?.name;
-  const messages = currentChatRoom?.messages;
+  const messagesEndRef = useRef(null);
   const [message, setMessage] = useState<string>();
+
+  useEffect(() => {
+    // Scroll the div to the bottom
+    if (messagesEndRef && messagesEndRef.current)
+      messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+  }, [messages]);
 
   const header = useMemo(
     () => (
@@ -31,34 +37,39 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ send }) => {
 
   const chatContent = useMemo(
     () => (
-      <ChatContent>
-        {messages &&
-          messages.map((message: Message, idx) => (
-            <MessageBox
-              key={idx}
-              message={message}
-              isOwner={message.clientId == id}
-            />
-          ))}
+      <ChatContent ref={messagesEndRef}>
+        {messages.map((message: Message, idx) => (
+          <MessageBox
+            key={idx}
+            message={message}
+            isOwner={message.clientId == id}
+          />
+        ))}
       </ChatContent>
     ),
     [messages, id]
   );
 
-  const chatTextArea = useMemo(
-    () => (
+  const chatTextArea = useMemo(() => {
+    const handleKeyDown = (e) => {
+      if (e.keyCode === 13 && !e.shiftKey) {
+        e.preventDefault();
+        if (message && message !== "") {
+          send(message, currentChatRoom!.id);
+          setMessage("");
+        }
+      }
+    };
+    return (
       <TextArea
         placeholder="Enter a message"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         autoSize={{ minRows: 5, maxRows: 7 }}
-        onPressEnter={() => {
-          if (message) send(message);
-        }}
+        onKeyDown={handleKeyDown}
       />
-    ),
-    [send, message]
-  );
+    );
+  }, [send, message]);
   if (!currentChatRoom) return <></>;
 
   return (

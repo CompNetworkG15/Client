@@ -18,11 +18,10 @@ const { Header, Content } = Layout;
 const { Title } = Typography;
 
 const Home = () => {
-  const { getChatRooms } = useChatStore();
+  const { getChatRooms, addMessage } = useChatStore();
   const { id, nickname } = useProfileStore();
   const [isLogin, setLogin] = useState<boolean>(false);
   const [socket, setSocket] = useState<Socket>();
-  const [messages, setMessages] = useState<Message[]>([]);
   const [chatName, setChatName] = useState<string>("");
   const [chatType, setChatType] = useState<ChatType>();
 
@@ -37,7 +36,7 @@ const Home = () => {
 
   useEffect(() => {
     const messageListener = (message: Message) => {
-      setMessages((messages) => [...messages, message]);
+      addMessage(message);
     };
     const newJoinerListener = async (flag: boolean) => {
       if (flag && id) {
@@ -54,7 +53,7 @@ const Home = () => {
       socket?.off("message", messageListener);
       socket?.off("newJoiner", newJoinerListener);
     };
-  }, [id, socket]);
+  }, [id, chatName, chatType, socket, getChatRooms, addMessage]);
 
   useEffect(() => {
     const fetchChatRooms: any = async () => {
@@ -67,10 +66,10 @@ const Home = () => {
       }
     };
     fetchChatRooms();
-  }, [id, chatName, chatType]);
+  }, [id, chatName, chatType, getChatRooms]);
 
-  const send = (message: string) => {
-    socket?.emit("message", message);
+  const send = (content: string, chatId: number) => {
+    socket?.emit("message", { content, clientId: id, chatId });
   };
 
   const sendFlag = () => {
@@ -143,7 +142,7 @@ const Home = () => {
         </NavBar>
         <MyContent>
           {renderSideber()}
-          <ChatWindow name="Tae" messages={messages} send={send} />
+          <ChatWindow send={send} />
           <CenteredModal open={isLogin} footer={null} closable={false}>
             <LoginRegisterContent sendFlag={sendFlag} setLogin={setLogin} />
           </CenteredModal>
