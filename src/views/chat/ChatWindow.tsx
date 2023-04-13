@@ -107,7 +107,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ name, messages, send }) => {
         ))}
       </ChatContent>
     ),
-    [messages]
+    [messages, id]
   );
 
   const chatTextArea = useMemo(

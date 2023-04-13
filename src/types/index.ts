@@ -20,5 +20,5 @@ export type Message = {
   createdAt: Date;
   clientId: number;
   chatId: number;
-  name: string;
+  nickname: string;
 };

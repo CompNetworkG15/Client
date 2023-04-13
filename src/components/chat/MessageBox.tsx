@@ -12,17 +12,16 @@ type MessageBoxProps = {
 const { Title } = Typography;
 
 const MessageBox: React.FC<MessageBoxProps> = ({ message, isOwner }) => {
-  const { content, createdAt, clientId, name } = message;
+  const { content, createdAt, clientId, nickname } = message;
   return (
     <Box isOwner={isOwner}>
-      {!isOwner && <Title level={5}>{name}</Title>}
+      {!isOwner && <Title level={5}>{nickname}</Title>}
       <MessageContent>{content}</MessageContent>
     </Box>
   );
 };
 
 const Box = styled.div<{ isOwner: boolean }>`
-  width: 100%;
   min-height: 50px;
   display: flex;
   flex-flow: ${(p) => (p.isOwner ? "row-reverse" : "row")};
