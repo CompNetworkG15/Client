@@ -96,7 +96,9 @@ const Home = () => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setChatName(e.target.value)
             }
-            onPressEnter={() => getChatRooms(id, chatName, chatType)}
+            onPressEnter={() => {
+              if (id) getChatRooms(id, chatName, chatType);
+            }}
           />
         </SidebarHeader>
         <ChatRoomList sendJoin={sendJoin} />
@@ -140,11 +142,11 @@ const Home = () => {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setNewNickName(e.target.value)
                 }
-                onPressEnter={() => {
+                onPressEnter={async () => {
                   setEditNickNameMode(false);
-                  if (newNickName != "") {
+                  if (newNickName != "" && id) {
+                    await editNickName(newNickName, id);
                     sendFlag();
-                    editNickName(newNickName, id);
                   }
                 }}
                 autoFocus
@@ -162,7 +164,7 @@ const Home = () => {
             send={send}
             fetchChatRooms={async () => {
               try {
-                await getChatRooms(id, chatName, chatType);
+                if (id) await getChatRooms(id, chatName, chatType);
               } catch (error: any) {
                 message.error(error.message);
               }
