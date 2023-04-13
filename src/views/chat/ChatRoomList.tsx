@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import ChatRoomComponent from "@/components/ChatRoom";
+import ChatRoomComponent from "@/components/chat-room";
 import { Socket } from "socket.io-client";
 import theme from "@/utils/theme";
 import useChatStore from "@/hooks/useChatStore";
