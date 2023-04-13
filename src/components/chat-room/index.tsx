@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Image from "next/legacy/image";
 import { API } from "@/config";
-import { ChatType, Message } from "@/types";
+import { Message } from "@/types";
 import { Socket } from "socket.io-client";
 import useProfileStore from "@/hooks/useProfileStore";
 
@@ -44,33 +44,8 @@ const ChatRoom: React.FC<ChatRoomProps> = ({
           />
         </ImageContainer>
       </LeftContainer>
-      <CenterContainer>
-        {/* {chatType == ChatType.DIRECT ? ( */}
-        <UserContainer>{name}</UserContainer>
-        {/* // ) : (
-        //   <UserContainer>{name} (3)</UserContainer>
-        // )} */}
-
-        <MessageContainer>
-          {/* {mockMessages[mockMessages.length - 1].content.length <= 18
-            ? mockMessages[mockMessages.length - 1].content
-            : `${mockMessages[mockMessages.length - 1].content.substring(
-                0,
-                18
-              )}.....`} */}
-        </MessageContainer>
-      </CenterContainer>
       <RightContainer>
-        <TimeContainer>
-          {/* {mockMessages[mockMessages.length - 1].createdAt
-            .toString()
-            .substring(15, 21)} */}
-        </TimeContainer>
-        {/* {1 > 0 ? ( */}
-        {/* <NewMessagesCountContainer>{1}</NewMessagesCountContainer> */}
-        {/* ) : ( */}
-        <NoNewMessagesCountContainer></NoNewMessagesCountContainer>
-        {/* )} */}
+        <UserContainer>{name}</UserContainer>
       </RightContainer>
     </ChatRoomContainer>
   );
@@ -86,49 +61,17 @@ const ChatRoomContainer = styled.div`
   }
 `;
 
-const NewMessagesCountContainer = styled.div`
-  border-radius: 50%;
-  height: 1.1vw;
-  width: 1.1vw;
-  background-color: #f96491;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-size: 0.7vw;
-`;
-
-const NoNewMessagesCountContainer = styled.div`
-  border-radius: 50%;
-  height: 1.5vw;
-  width: 1.5vw;
-  background-color: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-size: 0.7vw;
-`;
-
 const RightContainer = styled.div`
-  display: flex;
-  flex-flow: column;
-  align-items: end;
-  justify-content: space-around;
-  width: 25%;
-`;
-
-const CenterContainer = styled.div`
   display: flex;
   flex-flow: column;
   align-items: start;
   justify-content: space-around;
-  width: 50%;
+  width: 70%;
   padding: 0 0.5vw;
 `;
 
 const LeftContainer = styled.div`
-  width: 20%;
+  width: 30%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -140,20 +83,10 @@ const ImageContainer = styled.div`
   width: 3vw;
 `;
 
-const TimeContainer = styled.div`
-  color: #cccccc;
-  font-size: 0.7vw;
-`;
-
 const UserContainer = styled.div`
   font-weight: bold;
   font-size: 1vw;
   color: black;
-`;
-
-const MessageContainer = styled.div`
-  color: #777777;
-  font-size: 0.7vw;
 `;
 
 export default ChatRoom;
