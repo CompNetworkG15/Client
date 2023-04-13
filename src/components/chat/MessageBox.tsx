@@ -18,7 +18,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({ message, isOwner }) => {
   return (
     <Box isOwner={isOwner}>
       {!isOwner && <Title level={5}>{nickname}</Title>}
-      <MessageContent>
+      <MessageContent isOwner={isOwner}>
         <Paragraph>{content}</Paragraph>
       </MessageContent>
       <TimeWrapper>
@@ -40,11 +40,13 @@ const Box = styled.div<{ isOwner: boolean }>`
   }
 `;
 
-const MessageContent = styled.div`
+const MessageContent = styled.div<{ isOwner: boolean }>`
   max-width: 50%;
   height: fit-content;
   background-color: #06c755;
   border-radius: 16px;
+  border-top-left-radius: ${(p) => (p.isOwner ? "16px" : "0")};
+  border-top-right-radius: ${(p) => (p.isOwner ? "0" : "16px")};
   padding: 10px 15px;
   word-wrap: break-word;
 `;
