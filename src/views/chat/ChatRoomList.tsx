@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import ChatRoom from "@/components/chat-room";
-import theme from "@/utils/theme";
 import useChatStore from "@/hooks/useChatStore";
 
 type ChatRoomListProps = {

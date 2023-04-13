@@ -34,7 +34,7 @@ const ChatRoomCard: React.FC<ChatRoomProps> = ({ chatRoom, sendJoin }) => {
 const ChatRoomContainer = styled.div`
   display: grid;
   grid-template-columns: 3fr 7fr;
-  padding: 10px 20px;
+  padding: 10px;
   height: 75px;
   align-items: center;
   :hover {
