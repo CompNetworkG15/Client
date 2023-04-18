@@ -1,5 +1,5 @@
 import { Layout, Typography, message, Input, Space } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import styled from "styled-components";
 
@@ -39,11 +39,8 @@ const Home = () => {
     setSocket(newSocket);
   }, [setSocket]);
 
-  useEffect(() => {
-    const messageListener = (message: Message) => {
-      addMessage(message);
-    };
-    const newJoinerListener = async (flag: boolean) => {
+  const newJoinerListener = useCallback(
+    async (flag: boolean) => {
       if (flag && id) {
         try {
           await getChatRooms(id, chatName, chatType);
@@ -51,14 +48,25 @@ const Home = () => {
           message.error(error.message);
         }
       }
-    };
+    },
+    [chatName, chatType, getChatRooms, id]
+  );
+
+  const messageListener = useCallback(
+    (message: Message) => {
+      addMessage(message);
+    },
+    [addMessage]
+  );
+
+  useEffect(() => {
     socket?.on("message", messageListener);
     socket?.on("newJoiner", newJoinerListener);
     return () => {
       socket?.off("message", messageListener);
       socket?.off("newJoiner", newJoinerListener);
     };
-  }, [id, chatName, chatType, socket, getChatRooms, addMessage]);
+  }, [socket, newJoinerListener, messageListener]);
 
   useEffect(() => {
     const fetchChatRooms: any = async () => {

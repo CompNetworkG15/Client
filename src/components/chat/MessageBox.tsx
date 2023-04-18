@@ -1,8 +1,9 @@
-import { Message } from "@/types";
+import { Message, MessageType } from "@/types";
 import { Typography } from "antd";
 import React from "react";
 import styled from "styled-components";
 import dayjs from "dayjs";
+import theme from "@/utils/theme";
 
 type MessageBoxProps = {
   key: any;
@@ -13,9 +14,14 @@ type MessageBoxProps = {
 const { Title, Paragraph, Text } = Typography;
 
 const MessageBox: React.FC<MessageBoxProps> = ({ message, isOwner }) => {
-  const { content, createdAt, clientId, nickname } = message;
+  const { content, createdAt, clientId, nickname, messageType } = message;
 
-  return (
+  return messageType === MessageType.SYSTEM ? (
+    <SystemBox>
+      <Text>{dayjs(createdAt).format("HH:mm")}</Text>
+      <Paragraph>{content}</Paragraph>
+    </SystemBox>
+  ) : (
     <Box isOwner={isOwner}>
       {!isOwner && <Title level={5}>{nickname}</Title>}
       <MessageContent isOwner={isOwner}>
@@ -27,6 +33,13 @@ const MessageBox: React.FC<MessageBoxProps> = ({ message, isOwner }) => {
     </Box>
   );
 };
+
+const SystemBox = styled.div`
+  height: fit-content;
+  display: flex;
+  color: white;
+  background-color: ${theme.color.lightGray};
+`;
 
 const Box = styled.div<{ isOwner: boolean }>`
   height: fit-content;

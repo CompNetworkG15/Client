@@ -5,6 +5,13 @@ export const ChatType = {
 
 export type ChatType = typeof ChatType[keyof typeof ChatType];
 
+export const MessageType = {
+  CLIENT: "CLEINT",
+  SYSTEM: "SYSTEM",
+} as const;
+
+export type MessageType = typeof MessageType[keyof typeof MessageType];
+
 export type ChatMember = {
   id: number;
   image?: string;
@@ -27,4 +34,5 @@ export type Message = {
   clientId: number;
   chatId: number;
   nickname: string;
+  messageType: MessageType;
 };
