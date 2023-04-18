@@ -1,5 +1,4 @@
 import { ContainedButton } from "@/common/button";
-import CenteredModal from "@/common/modal";
 import MessageBox from "@/components/chat/MessageBox";
 import useChatStore from "@/hooks/useChatStore";
 import useProfileStore from "@/hooks/useProfileStore";
@@ -78,7 +77,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ send, fetchChatRooms }) => {
         />
       </JoinChatContainer>
     ),
-    [currentChatRoom, id, joinChat]
+    [currentChatRoom, fetchChatRooms, id, joinChat]
   );
 
   const chatTextArea = useMemo(() => {
@@ -101,7 +100,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ send, fetchChatRooms }) => {
         disabled={!isMember}
       />
     );
-  }, [send, message, isMember]);
+  }, [message, isMember, send, currentChatRoom]);
 
   if (!currentChatRoom) return <></>;
 

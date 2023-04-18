@@ -18,8 +18,10 @@ const MessageBox: React.FC<MessageBoxProps> = ({ message, isOwner }) => {
 
   return messageType === MessageType.SYSTEM ? (
     <SystemBox>
-      <Text>{dayjs(createdAt).format("HH:mm")}</Text>
-      <Paragraph>{content}</Paragraph>
+      <TextContainer>
+        <Text>{dayjs(createdAt).format("HH:mm")}</Text>
+        <Paragraph>{content}</Paragraph>
+      </TextContainer>
     </SystemBox>
   ) : (
     <Box isOwner={isOwner}>
@@ -38,6 +40,21 @@ const SystemBox = styled.div`
   height: fit-content;
   display: flex;
   color: white;
+  justify-content: center;
+  width: 100%;
+  .ant-typography {
+    white-space: pre-wrap;
+    margin: 0;
+  }
+`;
+
+const TextContainer = styled.div`
+  display: flex;
+  flex-flow: row;
+  gap: 10px;
+  padding: 5px 10px;
+  border-radius: 16px;
+  width: fit-content;
   background-color: ${theme.color.lightGray};
 `;
 
