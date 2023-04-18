@@ -89,8 +89,8 @@ const Home = () => {
     socket?.emit("newJoiner", true);
   };
 
-  const sendJoin = (chatId: number, cliendId: number) => {
-    socket?.emit("join", { chatId, cliendId });
+  const sendJoin = (chatId: number, clientId: number) => {
+    socket?.emit("join", { chatId, clientId });
   };
 
   const renderSideber = () => {
