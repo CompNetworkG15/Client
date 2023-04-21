@@ -143,7 +143,6 @@ const ChatContainer = styled.div`
 
 const ChatHeader = styled.div`
   height: 7.5vh;
-  width: ;
   display: flex;
   justify-content: space-between;
   padding: 10px;
@@ -177,9 +176,7 @@ const Main = styled.div`
   overflow: hidden;
 `;
 
-const LeaveGroupButton = styled.div`
-  float: left;
-`;
+const LeaveGroupButton = styled.div``;
 
 const Footer = styled.div`
   width: 100%;
