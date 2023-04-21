@@ -11,10 +11,10 @@ type MessageBoxProps = {
   isOwner: boolean;
 };
 
-const { Title, Paragraph, Text } = Typography;
+const { Paragraph, Text } = Typography;
 
 const MessageBox: React.FC<MessageBoxProps> = ({ message, isOwner }) => {
-  const { content, createdAt, clientId, nickname, messageType } = message;
+  const { content, createdAt, nickname, messageType } = message;
 
   return messageType === MessageType.SYSTEM ? (
     <SystemBox>
@@ -25,12 +25,12 @@ const MessageBox: React.FC<MessageBoxProps> = ({ message, isOwner }) => {
     </SystemBox>
   ) : (
     <Box isOwner={isOwner}>
-      {!isOwner && <Title level={5}>{nickname}</Title>}
+      {!isOwner && <Paragraph>{nickname}</Paragraph>}
       <MessageContent isOwner={isOwner}>
         <Paragraph>{content}</Paragraph>
       </MessageContent>
       <TimeWrapper>
-        <Text>{dayjs(createdAt).format("HH:mm")}</Text>
+        <TimeStamp>{dayjs(createdAt).format("HH:mm")}</TimeStamp>
       </TimeWrapper>
     </Box>
   );
@@ -73,7 +73,7 @@ const Box = styled.div<{ isOwner: boolean }>`
 const MessageContent = styled.div<{ isOwner: boolean }>`
   max-width: 50%;
   height: fit-content;
-  background-color: #06c755;
+  background-color: #eAeAeA;
   border-radius: 16px;
   border-top-left-radius: ${(p) => (p.isOwner ? "16px" : "0")};
   border-top-right-radius: ${(p) => (p.isOwner ? "0" : "16px")};
@@ -84,6 +84,11 @@ const MessageContent = styled.div<{ isOwner: boolean }>`
 const TimeWrapper = styled.div`
   display: flex;
   align-items: flex-end;
+`;
+
+const TimeStamp = styled(Text)`
+  color: ${theme.color.gray};
+  font-size: 12px;
 `;
 
 export default MessageBox;

@@ -59,6 +59,14 @@ const Home = () => {
     [addMessage]
   );
 
+  const changeNickname = async () => {
+    setEditNickNameMode(false);
+    if (newNickName != "" && id) {
+      await editNickName(newNickName, id);
+      sendFlag();
+    }
+  };
+
   useEffect(() => {
     socket?.on("message", messageListener);
     socket?.on("newJoiner", newJoinerListener);
@@ -92,7 +100,7 @@ const Home = () => {
   const sendJoin = (chatId: number, clientId: number) => {
     socket?.emit("join", { chatId, clientId });
   };
-
+  
   const renderSideber = () => {
     return (
       <SidebarContainer>
@@ -150,13 +158,8 @@ const Home = () => {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setNewNickName(e.target.value)
                 }
-                onPressEnter={async () => {
-                  setEditNickNameMode(false);
-                  if (newNickName != "" && id) {
-                    await editNickName(newNickName, id);
-                    sendFlag();
-                  }
-                }}
+                onPressEnter={changeNickname}
+                onBlur={changeNickname}
                 autoFocus
               ></Input>
             </Space.Compact>
@@ -232,10 +235,13 @@ const Category = styled.div<{ isSelected: boolean }>`
   width: 50px;
   text-align: center;
   cursor: pointer;
-  border-bottom: ${(p) => p.isSelected && `2px solid ${theme.color.gray}`};
+  border-bottom: ${(p) => p.isSelected && `3px solid ${theme.color.black}`};
+  color: ${(p) => (p.isSelected ? theme.color.black : theme.color.gray)};
 `;
 
-const ProfileName = styled(Title)``;
+const ProfileName = styled(Title)`
+  margin-bottom: 0px !important;
+`;
 
 const MyContent = styled(Content)`
   display: grid;

@@ -15,11 +15,13 @@ const { Title } = Typography;
 const CreateGroupForm: React.FC<CreateGroupFormProps> = ({ onClose }) => {
   const { id } = useProfileStore();
   const { createChatGroup } = useChatStore();
+  const [form] = Form.useForm();
 
   const handleFinish = async (values: { name: string }) => {
     try {
       const { name } = values;
-      await createChatGroup(id, name);
+      await createChatGroup(id as number, name);
+      form.resetFields();
       onClose();
     } catch (err: any) {
       message.error(err.message);
@@ -27,7 +29,7 @@ const CreateGroupForm: React.FC<CreateGroupFormProps> = ({ onClose }) => {
   };
 
   return (
-    <CreateForm onFinish={handleFinish}>
+    <CreateForm onFinish={handleFinish} form={form}>
       <Row>
         <Title level={5}>Group Name</Title>
         <Item

@@ -46,19 +46,24 @@ const LoginRegisterContent: React.FC<LoginRegisterContentProps> = ({
   };
 
   return isRegister ? (
-    <LoginContainer>
+    <ContentContainer>
       <div>
         <Title>Register</Title>
       </div>
       <InputRow>
         <Title level={5}>Email</Title>
-        <Input value={email} onChange={(e: any) => setEmail(e.target.value)} />
+        <Input
+          value={email}
+          onChange={(e: any) => setEmail(e.target.value)}
+          onPressEnter={onRegister}
+        />
       </InputRow>
       <InputRow>
         <Title level={5}>Nickname</Title>
         <Input
           value={nickname}
           onChange={(e: any) => setNickname(e.target.value)}
+          onPressEnter={onRegister}
         />
       </InputRow>
       <div>
@@ -66,26 +71,30 @@ const LoginRegisterContent: React.FC<LoginRegisterContentProps> = ({
         <LinkText onClick={() => setRegister(false)}>Log In</LinkText>
       </div>
       <ContainedButton text="Sign Up" onClick={onRegister} />
-    </LoginContainer>
+    </ContentContainer>
   ) : (
-    <LoginContainer>
+    <ContentContainer>
       <div>
         <Title>Login</Title>
       </div>
       <InputRow>
         <Title level={5}>Email</Title>
-        <Input value={email} onChange={(e: any) => setEmail(e.target.value)} />
+        <Input
+          value={email}
+          onChange={(e: any) => setEmail(e.target.value)}
+          onPressEnter={onLogin}
+        />
       </InputRow>
       <div>
         <Text>Have no account? </Text>
         <LinkText onClick={() => setRegister(true)}>Sign up</LinkText>
       </div>
       <ContainedButton text="Log In" onClick={onLogin} />
-    </LoginContainer>
+    </ContentContainer>
   );
 };
 
-const LoginContainer = styled.div`
+const ContentContainer = styled.div`
   display: flex;
   flex-flow: column;
   justify-content: center;
