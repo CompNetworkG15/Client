@@ -25,9 +25,11 @@ axios.interceptors.response.use(
 );
 
 const request = (method, url, params, headers, auth, config) => {
-  const req = [axios.post, axios.put, axios.patch].includes(method)
-    ? method(url, params, { ...config, headers, auth }) // POST, PUT, PATCH
-    : method(url, { ...config, params, headers, auth }); // GET, DELETE, HEAD, OPTIONS
+  const req = [axios.post, axios.put, axios.patch, axios.delete].includes(
+    method
+  )
+    ? method(url, params, { ...config, headers, auth }) // POST, PUT, PATCH, DELETE
+    : method(url, { ...config, params, headers, auth }); // GET, HEAD, OPTIONS
   return req;
 };
 
