@@ -16,12 +16,14 @@ const { Title } = Typography;
 
 const ChatRoomCard: React.FC<ChatRoomProps> = ({ chatRoom, sendJoin }) => {
   const { id, name, image, chatType } = chatRoom;
-  const { setCurrentChatRoom } = useChatStore();
+  const { setCurrentChatRoom, currentChatRoom } = useChatStore();
   const clientId = useProfileStore().id;
 
   const handleClick = () => {
-    sendJoin(id, clientId as number);
-    setCurrentChatRoom(chatRoom);
+    if (!currentChatRoom || currentChatRoom.id !== id) {
+      setCurrentChatRoom(chatRoom);
+      sendJoin(id, clientId as number);
+    }
   };
 
   return (
@@ -42,6 +44,7 @@ const ChatRoomContainer = styled.div`
   padding: 10px;
   height: 75px;
   align-items: center;
+  cursor: pointer;
   :hover {
     background-color: white;
   }
