@@ -76,11 +76,12 @@ const ChatRoomContainer = styled.div`
   }
 `;
 
-const ChatRoomImage = styled(Image)`
+const ChatRoomImage = styled.img`
   object-fit: cover;
   width: 55px !important;
-  height: inherit;
+  height: 55px;
   border-radius: 50%;
+  margin: 0 auto;
 `;
 
 export default ChatRoomCard;

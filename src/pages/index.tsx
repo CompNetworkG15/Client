@@ -175,11 +175,7 @@ const Home = () => {
             )}
             <ProfileImageContainer onClick={() => setModalOpen(true)}>
               {imageUrl ? (
-                <ProfileImage
-                  crossOrigin="anonymous"
-                  src={API + imageUrl}
-                  preview={false}
-                />
+                <ProfileImage crossOrigin="anonymous" src={API + imageUrl} />
               ) : (
                 <AccountCircleIcon
                   sx={{
@@ -286,7 +282,7 @@ const ProfileImageContainer = styled.div`
   height: 30px;
 `;
 
-const ProfileImage = styled(Image)`
+const ProfileImage = styled.img`
   overflow: hidden;
   object-fit: cover;
   border-radius: 50%;
