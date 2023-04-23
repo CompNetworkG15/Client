@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { ChatType, ChatRoom } from "@/types";
 import useProfileStore from "@/hooks/useProfileStore";
 import useChatStore from "@/hooks/useChatStore";
-import { Typography } from "antd";
+import { Typography, Image } from "antd";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import PeopleIcon from "@mui/icons-material/People";
 
@@ -28,10 +28,16 @@ const ChatRoomCard: React.FC<ChatRoomProps> = ({ chatRoom, sendJoin }) => {
 
   return (
     <ChatRoomContainer onClick={handleClick}>
-      {chatType === ChatType.DIRECT ? (
-        <AccountCircleIcon sx={{ color: "black", justifySelf: "center" }} />
+      {image ? (
+        <ChatRoomImage src={image}/>
+      ) : chatType === ChatType.DIRECT ? (
+        <AccountCircleIcon
+          sx={{ color: "black", justifySelf: "center", fontSize: "55px" }}
+        />
       ) : (
-        <PeopleIcon sx={{ color: "black", justifySelf: "center" }} />
+        <PeopleIcon
+          sx={{ color: "black", justifySelf: "center", fontSize: "55px" }}
+        />
       )}
       <Title level={5}>{name}</Title>
     </ChatRoomContainer>
@@ -51,6 +57,11 @@ const ChatRoomContainer = styled.div`
   .ant-typography {
     margin: 0;
   }
+`;
+
+const ChatRoomImage = styled(Image)`
+  width: 55px;
+  height: 55px;
 `;
 
 export default ChatRoomCard;

@@ -73,7 +73,7 @@ const Box = styled.div<{ isOwner: boolean }>`
 const MessageContent = styled.div<{ isOwner: boolean }>`
   max-width: 50%;
   height: fit-content;
-  background-color: #eAeAeA;
+  background-color: #eaeaea;
   border-radius: 16px;
   border-top-left-radius: ${(p) => (p.isOwner ? "16px" : "0")};
   border-top-right-radius: ${(p) => (p.isOwner ? "0" : "16px")};
