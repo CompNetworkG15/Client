@@ -287,7 +287,7 @@ const ProfileImage = styled.img`
   object-fit: cover;
   border-radius: 50%;
   height: 100%;
-  width: auto;
+  width: 100%;
 `;
 
 const MyContent = styled(Content)`
