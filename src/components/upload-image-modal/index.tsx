@@ -93,7 +93,7 @@ const UploadImageModal: React.FC<UploadImageModalProps> = ({
     const formData: FormData = new FormData();
     const { picture } = form.getFieldsValue(true);
     formData.append("email", email);
-    formData.append("photo_url", picture.file.originFileObj);
+    formData.append("image", picture.file.originFileObj);
     await uploadImage(formData, clientId);
     setModalOpen(false);
     // router.reload();

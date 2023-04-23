@@ -36,14 +36,10 @@ const useProfileStore = create<ProfileStore>((set, get) => ({
     const { data } = await client.patch(`${API}client/${id}`, { nickname });
     set({ nickname: data.nickname });
   },
-  uploadImage: async (image: FormData, id: number) => {
-    const { data } = await client.patch(
-      `${API}client/${id}`,
-      { image },
-      {
-        "Content-Type": "multipart/form-data",
-      }
-    );
+  uploadImage: async (params: FormData, id: number) => {
+    const { data } = await client.patch(`${API}client/${id}`, params, {
+      "Content-Type": "multipart/form-data",
+    });
     set({ imageUrl: data.image });
   },
 }));
