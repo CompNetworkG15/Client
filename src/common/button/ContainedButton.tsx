@@ -8,14 +8,10 @@ const ContainedButton: React.FC<ContainedButtonProps> = (props: any) => {
   const { text, ...otherProps } = props;
 
   return (
-    <Button type="primary" {...otherProps}>
+    <AntdButton type="primary" {...otherProps}>
       {text}
-    </Button>
+    </AntdButton>
   );
 };
-
-const Button = styled(AntdButton)`
-  border-radius: 8px !important;
-`;
 
 export default ContainedButton;

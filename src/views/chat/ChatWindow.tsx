@@ -43,22 +43,20 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ send, fetchChatRooms }) => {
   const header = useMemo(
     () => (
       <ChatHeader>
-        <ChatTitle level={5}>{name}</ChatTitle>
+        <Title level={5}>{name}</Title>
         {isMember &&
           currentChatRoom?.chatType === ChatType.GROUP && ( // can not leave if it is direct
-            <LeaveGroupButton>
-              <OutlinedButton
-                text="Leave group"
-                onClick={async () => {
-                  if (currentChatRoom && id) {
-                    await leaveGroup(currentChatRoom!.id, id);
-                    await fetchChatRooms(); // re-fetch to update chat room members
-                    setMember(false);
-                  }
-                }}
-                danger
-              />
-            </LeaveGroupButton>
+            <OutlinedButton
+              text="Leave group"
+              onClick={async () => {
+                if (currentChatRoom && id) {
+                  await leaveGroup(currentChatRoom!.id, id);
+                  await fetchChatRooms(); // re-fetch to update chat room members
+                  setMember(false);
+                }
+              }}
+              danger
+            />
           )}
       </ChatHeader>
     ),
@@ -150,10 +148,9 @@ const ChatHeader = styled.div`
   .ant-input-affix-wrapper {
     width: 50%;
   }
-`;
-
-const ChatTitle = styled(Title)`
-  margin-bottom: 0px !important;
+  .ant-typography {
+    margin-bottom: 0;
+  }
 `;
 
 const ChatContent = styled.div`
@@ -175,8 +172,6 @@ const Main = styled.div`
   flex-flow: column;
   overflow: hidden;
 `;
-
-const LeaveGroupButton = styled.div``;
 
 const Footer = styled.div`
   width: 100%;

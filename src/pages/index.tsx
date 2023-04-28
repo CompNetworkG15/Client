@@ -100,7 +100,7 @@ const Home = () => {
   const sendJoin = (chatId: number, clientId: number) => {
     socket?.emit("join", { chatId, clientId });
   };
-  
+
   const renderSideber = () => {
     return (
       <SidebarContainer>
@@ -123,83 +123,81 @@ const Home = () => {
   };
 
   return (
-    <>
-      <ChatContainer>
-        <NavBar>
-          <ChatCategory>
-            <Category
-              isSelected={chatType === undefined}
-              onClick={() => setChatType(undefined)}
-            >
-              All
-            </Category>
-            <Category
-              isSelected={chatType === ChatType.DIRECT}
-              onClick={() => setChatType(ChatType.DIRECT)}
-            >
-              Directs
-            </Category>
-            <Category
-              isSelected={chatType === ChatType.GROUP}
-              onClick={() => setChatType(ChatType.GROUP)}
-            >
-              Groups
-            </Category>
-            <OutlinedButton
-              text="Create Group"
-              onClick={() => setCreatingGroup(true)}
-            />
-          </ChatCategory>
-          {editNickNameMode ? (
-            <Space.Compact style={{ width: "10%" }}>
-              <Input
-                type="text"
-                defaultValue={nickname}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setNewNickName(e.target.value)
-                }
-                onPressEnter={changeNickname}
-                onBlur={changeNickname}
-                autoFocus
-              ></Input>
-            </Space.Compact>
-          ) : (
-            <ProfileName level={5} onClick={() => setEditNickNameMode(true)}>
-              {nickname}
-            </ProfileName>
-          )}
-        </NavBar>
-        <MyContent>
-          {renderSideber()}
-          <ChatWindow
-            send={send}
-            fetchChatRooms={async () => {
-              try {
-                if (id) await getChatRooms(id, chatName, chatType);
-              } catch (error: any) {
-                message.error(error.message);
+    <ChatContainer>
+      <NavBar>
+        <ChatCategory>
+          <Category
+            isSelected={chatType === undefined}
+            onClick={() => setChatType(undefined)}
+          >
+            All
+          </Category>
+          <Category
+            isSelected={chatType === ChatType.DIRECT}
+            onClick={() => setChatType(ChatType.DIRECT)}
+          >
+            Directs
+          </Category>
+          <Category
+            isSelected={chatType === ChatType.GROUP}
+            onClick={() => setChatType(ChatType.GROUP)}
+          >
+            Groups
+          </Category>
+          <OutlinedButton
+            text="Create Group"
+            onClick={() => setCreatingGroup(true)}
+          />
+        </ChatCategory>
+        {editNickNameMode ? (
+          <Space.Compact style={{ width: "10%" }}>
+            <Input
+              type="text"
+              defaultValue={nickname}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setNewNickName(e.target.value)
               }
+              onPressEnter={changeNickname}
+              onBlur={changeNickname}
+              autoFocus
+            ></Input>
+          </Space.Compact>
+        ) : (
+          <Title level={5} onClick={() => setEditNickNameMode(true)}>
+            {nickname}
+          </Title>
+        )}
+      </NavBar>
+      <MyContent>
+        {renderSideber()}
+        <ChatWindow
+          send={send}
+          fetchChatRooms={async () => {
+            try {
+              if (id) await getChatRooms(id, chatName, chatType);
+            } catch (error: any) {
+              message.error(error.message);
+            }
+          }}
+        />
+        <CenteredModal open={isLogin} footer={null} closable={false}>
+          <LoginRegisterContent sendFlag={sendFlag} setLogin={setLogin} />
+        </CenteredModal>
+        <CenteredModal
+          open={creatingGroup}
+          title="Create Group"
+          footer={null}
+          onCancel={() => setCreatingGroup(false)}
+        >
+          <CreateGroupForm
+            onClose={() => {
+              sendFlag();
+              setCreatingGroup(false);
             }}
           />
-          <CenteredModal open={isLogin} footer={null} closable={false}>
-            <LoginRegisterContent sendFlag={sendFlag} setLogin={setLogin} />
-          </CenteredModal>
-          <CenteredModal
-            open={creatingGroup}
-            title="Create Group"
-            footer={null}
-            onCancel={() => setCreatingGroup(false)}
-          >
-            <CreateGroupForm
-              onClose={() => {
-                sendFlag();
-                setCreatingGroup(false);
-              }}
-            />
-          </CenteredModal>
-        </MyContent>
-      </ChatContainer>
-    </>
+        </CenteredModal>
+      </MyContent>
+    </ChatContainer>
   );
 };
 
@@ -215,6 +213,9 @@ const ChatContainer = styled(Layout)`
     background-color: ${theme.color.white};
     padding: 0 5vw 0 2.5vw;
   }
+  .ant-button {
+    border-radius: 8px;
+  }
 `;
 
 const NavBar = styled(Header)`
@@ -222,6 +223,9 @@ const NavBar = styled(Header)`
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid ${theme.color.border};
+  .ant-typography {
+    margin-bottom: 0;
+  }
 `;
 
 const ChatCategory = styled.div`
@@ -237,10 +241,6 @@ const Category = styled.div<{ isSelected: boolean }>`
   cursor: pointer;
   border-bottom: ${(p) => p.isSelected && `3px solid ${theme.color.black}`};
   color: ${(p) => (p.isSelected ? theme.color.black : theme.color.gray)};
-`;
-
-const ProfileName = styled(Title)`
-  margin-bottom: 0px !important;
 `;
 
 const MyContent = styled(Content)`
