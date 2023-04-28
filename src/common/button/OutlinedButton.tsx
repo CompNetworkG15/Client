@@ -5,11 +5,7 @@ import styled from "styled-components";
 const OutlinedButton = (props: any) => {
   const { text, ...otherProps } = props;
 
-  return <Button {...otherProps}>{text}</Button>;
+  return <AntdButton {...otherProps}>{text}</AntdButton>;
 };
-
-const Button = styled(AntdButton)`
-  border-radius: 8px !important;
-`;
 
 export default OutlinedButton;

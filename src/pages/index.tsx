@@ -127,103 +127,101 @@ const Home = () => {
   };
 
   return (
-    <>
-      <ChatContainer>
-        <NavBar>
-          <ChatCategory>
-            <Category
-              isSelected={chatType === undefined}
-              onClick={() => setChatType(undefined)}
-            >
-              All
-            </Category>
-            <Category
-              isSelected={chatType === ChatType.DIRECT}
-              onClick={() => setChatType(ChatType.DIRECT)}
-            >
-              Directs
-            </Category>
-            <Category
-              isSelected={chatType === ChatType.GROUP}
-              onClick={() => setChatType(ChatType.GROUP)}
-            >
-              Groups
-            </Category>
-            <OutlinedButton
-              text="Create Group"
-              onClick={() => setCreatingGroup(true)}
-            />
-          </ChatCategory>
-          <ProfileContainer>
-            {editNickNameMode ? (
-              <Space.Compact style={{ width: "200px" }}>
-                <Input
-                  type="text"
-                  defaultValue={nickname}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setNewNickName(e.target.value)
-                  }
-                  onPressEnter={changeNickname}
-                  onBlur={changeNickname}
-                  autoFocus
-                ></Input>
-              </Space.Compact>
+    <ChatContainer>
+      <NavBar>
+        <ChatCategory>
+          <Category
+            isSelected={chatType === undefined}
+            onClick={() => setChatType(undefined)}
+          >
+            All
+          </Category>
+          <Category
+            isSelected={chatType === ChatType.DIRECT}
+            onClick={() => setChatType(ChatType.DIRECT)}
+          >
+            Directs
+          </Category>
+          <Category
+            isSelected={chatType === ChatType.GROUP}
+            onClick={() => setChatType(ChatType.GROUP)}
+          >
+            Groups
+          </Category>
+          <OutlinedButton
+            text="Create Group"
+            onClick={() => setCreatingGroup(true)}
+          />
+        </ChatCategory>
+        <ProfileContainer>
+          {editNickNameMode ? (
+            <Space.Compact style={{ width: "200px" }}>
+              <Input
+                type="text"
+                defaultValue={nickname}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setNewNickName(e.target.value)
+                }
+                onPressEnter={changeNickname}
+                onBlur={changeNickname}
+                autoFocus
+              ></Input>
+            </Space.Compact>
+          ) : (
+            <Title level={5} onClick={() => setEditNickNameMode(true)}>
+              {nickname}
+            </Title>
+          )}
+          <ProfileImageContainer onClick={() => setModalOpen(true)}>
+            {imageUrl ? (
+              <ProfileImage crossOrigin="anonymous" src={API + imageUrl} />
             ) : (
-              <ProfileName level={5} onClick={() => setEditNickNameMode(true)}>
-                {nickname}
-              </ProfileName>
+              <AccountCircleIcon
+                sx={{
+                  color: "black",
+                  justifySelf: "center",
+                  fontSize: "30px",
+                }}
+              />
             )}
-            <ProfileImageContainer onClick={() => setModalOpen(true)}>
-              {imageUrl ? (
-                <ProfileImage crossOrigin="anonymous" src={API + imageUrl} />
-              ) : (
-                <AccountCircleIcon
-                  sx={{
-                    color: "black",
-                    justifySelf: "center",
-                    fontSize: "30px",
-                  }}
-                />
-              )}
-            </ProfileImageContainer>
-          </ProfileContainer>
-        </NavBar>
-        <MyContent>
-          {renderSideber()}
-          <ChatWindow
-            send={send}
-            fetchChatRooms={async () => {
-              try {
-                if (id) await getChatRooms(id, chatName, chatType);
-              } catch (error: any) {
-                message.error(error.message);
-              }
+          </ProfileImageContainer>
+        </ProfileContainer>
+      </NavBar>
+      <MyContent>
+        {renderSideber()}
+        <ChatWindow
+          send={send}
+          fetchChatRooms={async () => {
+            try {
+              if (id) await getChatRooms(id, chatName, chatType);
+            } catch (error: any) {
+              message.error(error.message);
+            }
+          }}
+        />
+        <CenteredModal open={isLogin} footer={null} closable={false}>
+          <LoginRegisterContent sendFlag={sendFlag} setLogin={setLogin} />
+        </CenteredModal>
+        <CenteredModal
+          open={creatingGroup}
+          title="Create Group"
+          footer={null}
+          onCancel={() => setCreatingGroup(false)}
+        >
+          <CreateGroupForm
+            onClose={() => {
+              sendFlag();
+              setCreatingGroup(false);
             }}
           />
-          <CenteredModal open={isLogin} footer={null} closable={false}>
-            <LoginRegisterContent sendFlag={sendFlag} setLogin={setLogin} />
-          </CenteredModal>
-          <CenteredModal
-            open={creatingGroup}
-            title="Create Group"
-            footer={null}
-            onCancel={() => setCreatingGroup(false)}
-          >
-            <CreateGroupForm
-              onClose={() => {
-                sendFlag();
-                setCreatingGroup(false);
-              }}
-            />
-          </CenteredModal>
-          <UploadImageModal
-            isModalOpen={isModalOpen}
-            setModalOpen={setModalOpen}
-            clientId={id as number}
-          />
-        </MyContent>
-      </ChatContainer>
-    </>
+        </CenteredModal>
+        <UploadImageModal
+          isModalOpen={isModalOpen}
+          setModalOpen={setModalOpen}
+          clientId={id as number}
+        />
+      </MyContent>
+    </ChatContainer>
   );
 };
 
@@ -239,6 +237,9 @@ const ChatContainer = styled(Layout)`
     background-color: ${theme.color.white};
     padding: 0 5vw 0 2.5vw;
   }
+  .ant-button {
+    border-radius: 8px;
+  }
 `;
 
 const NavBar = styled(Header)`
@@ -246,6 +247,9 @@ const NavBar = styled(Header)`
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid ${theme.color.border};
+  .ant-typography {
+    margin-bottom: 0;
+  }
 `;
 
 const ChatCategory = styled.div`
@@ -268,10 +272,6 @@ const ProfileContainer = styled.div`
   flex-flow: row;
   gap: 10px;
   align-items: center;
-`;
-
-const ProfileName = styled(Title)`
-  margin-bottom: 0px !important;
 `;
 
 const ProfileImageContainer = styled.div`

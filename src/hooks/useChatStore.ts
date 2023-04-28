@@ -16,6 +16,7 @@ type ChatStore = {
   setCurrentChatRoom: (chatRoom: ChatRoom) => Promise<void>;
   addMessage: (message: Message) => void;
   joinChat: (chatId: number, clientId: number) => Promise<void>;
+  leaveGroup: (chatId: number, clientId: number) => Promise<void>;
 };
 
 const useChatStore = create<ChatStore>((set, get) => ({
@@ -57,6 +58,12 @@ const useChatStore = create<ChatStore>((set, get) => ({
   },
   joinChat: async (chatId: number, clientId: number) => {
     await client.post(`${API}chatgroup/join`, { chatId, clientId });
+  },
+  leaveGroup: async (chatId: number, clientId: number) => {
+    console.log(`chatId: ${chatId}, clientId: ${clientId}`);
+    await client.delete(`${API}chatgroup/leave`, {
+      data: { chatId, clientId },
+    });
   },
 }));
 

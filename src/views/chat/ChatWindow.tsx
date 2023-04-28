@@ -1,8 +1,8 @@
-import { ContainedButton } from "@/common/button";
+import { ContainedButton, OutlinedButton } from "@/common/button";
 import MessageBox from "@/components/chat/MessageBox";
 import useChatStore from "@/hooks/useChatStore";
 import useProfileStore from "@/hooks/useProfileStore";
-import { Message } from "@/types";
+import { ChatType, Message } from "@/types";
 import { Input, Typography } from "antd";
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import styled from "styled-components";
@@ -17,7 +17,7 @@ const { TextArea } = Input;
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ send, fetchChatRooms }) => {
   const { id } = useProfileStore();
-  const { currentChatRoom, messages, joinChat } = useChatStore();
+  const { currentChatRoom, messages, joinChat, leaveGroup } = useChatStore();
   const name = currentChatRoom?.name;
   const messagesEndRef = useRef(null);
   const [message, setMessage] = useState<string>();
@@ -26,7 +26,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ send, fetchChatRooms }) => {
   useEffect(() => {
     if (id && currentChatRoom) {
       const allMembers = currentChatRoom.chatMembers.map((member) => member.id);
-      if (!allMembers.includes(id)) {
+      if (allMembers.includes(id)) {
+        setMember(true);
+      } else {
         setMember(false);
       }
     }
@@ -42,9 +44,23 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ send, fetchChatRooms }) => {
     () => (
       <ChatHeader>
         <Title level={5}>{name}</Title>
+        {isMember &&
+          currentChatRoom?.chatType === ChatType.GROUP && ( // can not leave if it is direct
+            <OutlinedButton
+              text="Leave group"
+              onClick={async () => {
+                if (currentChatRoom && id) {
+                  await leaveGroup(currentChatRoom!.id, id);
+                  await fetchChatRooms(); // re-fetch to update chat room members
+                  setMember(false);
+                }
+              }}
+              danger
+            />
+          )}
       </ChatHeader>
     ),
-    [name]
+    [currentChatRoom, fetchChatRooms, id, isMember, leaveGroup, name]
   );
 
   const chatContent = useMemo(
@@ -66,7 +82,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ send, fetchChatRooms }) => {
     () => (
       <JoinChatContainer>
         <ContainedButton
-          text="Join"
+          text="Join group"
           onClick={async () => {
             if (currentChatRoom && id) {
               await joinChat(currentChatRoom!.id, id);
@@ -81,7 +97,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ send, fetchChatRooms }) => {
   );
 
   const chatTextArea = useMemo(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: any) => {
       if (e.keyCode === 13 && !e.shiftKey) {
         e.preventDefault();
         if (message && message !== "") {
@@ -125,13 +141,15 @@ const ChatContainer = styled.div`
 
 const ChatHeader = styled.div`
   height: 7.5vh;
-  width: 100%;
   display: flex;
   justify-content: space-between;
   padding: 10px;
   align-items: center;
   .ant-input-affix-wrapper {
     width: 50%;
+  }
+  .ant-typography {
+    margin-bottom: 0;
   }
 `;
 
