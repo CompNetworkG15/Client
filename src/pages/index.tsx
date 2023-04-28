@@ -1,4 +1,4 @@
-import { Layout, Typography, message, Input, Space } from "antd";
+import { Layout, Typography, message, Input, Space, Image } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import styled from "styled-components";
@@ -6,7 +6,8 @@ import styled from "styled-components";
 import { SearchInput } from "@/common/input";
 import CenteredModal from "@/common/modal";
 import LoginRegisterContent from "@/components/login-register";
-import { SOCKET_URL } from "@/config";
+import UploadImageModal from "@/components/upload-image-modal";
+import { API, SOCKET_URL } from "@/config";
 import useProfileStore from "@/hooks/useProfileStore";
 import useChatStore from "@/hooks/useChatStore";
 import { ChatType, Message } from "@/types";
@@ -16,12 +17,14 @@ import ChatWindow from "@/views/chat/ChatWindow";
 import { OutlinedButton } from "@/common/button";
 import CreateGroupForm from "@/components/create-group";
 
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+
 const { Header, Content } = Layout;
 const { Title } = Typography;
 
 const Home = () => {
   const { getChatRooms, addMessage } = useChatStore();
-  const { id, nickname, editNickName } = useProfileStore();
+  const { id, nickname, editNickName, imageUrl } = useProfileStore();
   const [isLogin, setLogin] = useState<boolean>(false);
   const [socket, setSocket] = useState<Socket>();
   const [chatName, setChatName] = useState<string>("");
@@ -29,6 +32,7 @@ const Home = () => {
   const [editNickNameMode, setEditNickNameMode] = useState<boolean>(false);
   const [creatingGroup, setCreatingGroup] = useState<boolean>(false);
   const [newNickName, setNewNickName] = useState<string>("");
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     setLogin(true);
@@ -149,24 +153,39 @@ const Home = () => {
             onClick={() => setCreatingGroup(true)}
           />
         </ChatCategory>
-        {editNickNameMode ? (
-          <Space.Compact style={{ width: "10%" }}>
-            <Input
-              type="text"
-              defaultValue={nickname}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setNewNickName(e.target.value)
-              }
-              onPressEnter={changeNickname}
-              onBlur={changeNickname}
-              autoFocus
-            ></Input>
-          </Space.Compact>
-        ) : (
-          <Title level={5} onClick={() => setEditNickNameMode(true)}>
-            {nickname}
-          </Title>
-        )}
+        <ProfileContainer>
+          {editNickNameMode ? (
+            <Space.Compact style={{ width: "200px" }}>
+              <Input
+                type="text"
+                defaultValue={nickname}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setNewNickName(e.target.value)
+                }
+                onPressEnter={changeNickname}
+                onBlur={changeNickname}
+                autoFocus
+              ></Input>
+            </Space.Compact>
+          ) : (
+            <Title level={5} onClick={() => setEditNickNameMode(true)}>
+              {nickname}
+            </Title>
+          )}
+          <ProfileImageContainer onClick={() => setModalOpen(true)}>
+            {imageUrl ? (
+              <ProfileImage crossOrigin="anonymous" src={API + imageUrl} />
+            ) : (
+              <AccountCircleIcon
+                sx={{
+                  color: "black",
+                  justifySelf: "center",
+                  fontSize: "30px",
+                }}
+              />
+            )}
+          </ProfileImageContainer>
+        </ProfileContainer>
       </NavBar>
       <MyContent>
         {renderSideber()}
@@ -196,6 +215,11 @@ const Home = () => {
             }}
           />
         </CenteredModal>
+        <UploadImageModal
+          isModalOpen={isModalOpen}
+          setModalOpen={setModalOpen}
+          clientId={id as number}
+        />
       </MyContent>
     </ChatContainer>
   );
@@ -241,6 +265,29 @@ const Category = styled.div<{ isSelected: boolean }>`
   cursor: pointer;
   border-bottom: ${(p) => p.isSelected && `3px solid ${theme.color.black}`};
   color: ${(p) => (p.isSelected ? theme.color.black : theme.color.gray)};
+`;
+
+const ProfileContainer = styled.div`
+  display: flex;
+  flex-flow: row;
+  gap: 10px;
+  align-items: center;
+`;
+
+const ProfileImageContainer = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+`;
+
+const ProfileImage = styled.img`
+  overflow: hidden;
+  object-fit: cover;
+  border-radius: 50%;
+  height: 100%;
+  width: 100%;
 `;
 
 const MyContent = styled(Content)`
