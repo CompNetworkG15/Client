@@ -37,7 +37,7 @@ const CreateGroupForm: React.FC<CreateGroupFormProps> = ({ onClose }) => {
           rules={[
             {
               required: true,
-              message: "Please enter your amount",
+              message: "Please enter the group name",
             },
           ]}
         >
